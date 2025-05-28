@@ -1,0 +1,19 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# 项目背景
+这是一个基于 Vue3 在线小说阅读平台
+
+# 编码标准
+- 使用 vue3 composition api 和 typescript
+- 变量声明优先使用 const，而不是 let
+- 变量和函数名使用 camelCase 规范，组件名使用 PascalCase
+
+# 首选的库
+- 使用 tailwind 进行样式设计, 不要使用原生 css
+
+# 设计风格
+符合 2025 年最新审美，色彩搭配和谐，巧妙使用渐变和装饰元素，提升页面质感
+
