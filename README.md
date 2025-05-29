@@ -4,4 +4,5 @@
 
 ## fontend
 
+前提：`npm install`
 测试：`npm run dev`
