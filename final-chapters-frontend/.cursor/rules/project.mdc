@@ -4,7 +4,7 @@ globs:
 alwaysApply: true
 ---
 # 项目背景
-这是一个基于 Vue3 在线小说阅读平台
+这是一个基于 Vue3 和 vite 的在线小说阅读平台
 
 # 编码标准
 - 使用 vue3 composition api 和 typescript

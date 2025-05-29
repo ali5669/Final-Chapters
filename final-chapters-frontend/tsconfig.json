@@ -1,5 +1,14 @@
 {
-  "files": [],
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "types": ["node"],
+    "lib": ["esnext", "dom"],
+    "moduleResolution": "node"
+  },
   "references": [
     {
       "path": "./tsconfig.node.json"
