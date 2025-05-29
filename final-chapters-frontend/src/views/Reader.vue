@@ -114,11 +114,3 @@ const navigateToChapter = (chapterId: string) => {
   router.push(`/read/${route.params.novelId}/${chapterId}`)
 }
 </script>
-
-<style>
-.prose {
-  max-width: 65ch;
-  margin: 0 auto;
-  line-height: 1.8;
-}
-</style>

@@ -197,14 +197,3 @@ onMounted(async () => {
   })
 })
 </script>
-
-<style>
-/* Dark mode styles */
-.dark {
-  @apply bg-gray-900 text-gray-100;
-}
-
-.dark .prose {
-  @apply prose-invert;
-}
-</style>
