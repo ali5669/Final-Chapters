@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ali5669.commentservice.mapper.RatingMapper">
+
+    <select id="countRatingsByGroup" resultType="org.ali5669.commentservice.domain.dto.RatingCountDTO" parameterType="java.lang.Integer">
+        SELECT rating, COUNT(*) AS count
+        FROM Rating
+        WHERE novel_id = #{novelId}
+        GROUP BY rating
+        ORDER BY rating DESC
+    </select>
+</mapper>

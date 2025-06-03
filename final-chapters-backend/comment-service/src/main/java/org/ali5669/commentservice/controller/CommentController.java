@@ -5,10 +5,7 @@ import org.ali5669.commentservice.domain.dto.CommentCreateDTO;
 import org.ali5669.commentservice.domain.dto.Result;
 import org.ali5669.commentservice.domain.po.Comment;
 import org.ali5669.commentservice.service.ICommentService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/comment")
@@ -30,5 +27,20 @@ public class CommentController {
         comment.setContent(content);
 
         return commentService.createComment(comment);
+    }
+
+    @GetMapping
+    public Result getOne(@RequestParam("id")  String id){
+         return Result.ok(commentService.getOne(Integer.parseInt(id)));
+    }
+
+    @GetMapping("/list")
+    public Result listByNovelId(@RequestParam("novelId") String novelId){
+        return Result.ok(commentService.listByNovelId(Integer.parseInt(novelId)));
+    }
+
+    @GetMapping("/list")
+    public Result listByChapterId(@RequestParam("novelId") String novelId, @RequestParam("chapterId") String chapterId){
+        return Result.ok(commentService.listByChapterId(Integer.parseInt(novelId), Integer.parseInt(chapterId)));
     }
 }
