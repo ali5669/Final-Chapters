@@ -8,7 +8,7 @@ import org.ali5669.commentservice.service.IRatingService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/Rating")
+@RequestMapping("/api/rating")
 @RequiredArgsConstructor
 public class RatingController {
     private final IRatingService ratingService;
