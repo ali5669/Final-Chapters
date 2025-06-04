@@ -23,6 +23,10 @@ export interface RatingCountDTO {
   count: number
 }
 
+/**
+ * @name comment
+ * @description 评论请求接口集合
+ */
 export const $comment = {
   /**
    * @tags 评论
@@ -78,6 +82,10 @@ export const $comment = {
   },
 }
 
+/**
+ * @name rating
+ * @description 打分请求接口集合
+ */
 export const $rating = {
   /**
    * @tags 评分
