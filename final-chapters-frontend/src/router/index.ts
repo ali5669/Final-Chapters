@@ -16,17 +16,17 @@ const router = createRouter({
         {
           path: 'browse',
           name: 'browse',
-          component: () => import('@/views/NovelBrowse.vue'),
+          component: () => import('@/views/novel/NovelBrowse.vue'),
         },
         {
           path: 'novel/:id',
           name: 'novel-detail',
-          component: () => import('@/views/NovelDetail.vue'),
+          component: () => import('@/views/novel/NovelDetail.vue'),
         },
         {
           path: 'read/:novelId/:chapterId',
           name: 'reader',
-          component: () => import('@/views/NovelReader.vue'),
+          component: () => import('@/views/novel/NovelReader.vue'),
         },
       ],
     },
