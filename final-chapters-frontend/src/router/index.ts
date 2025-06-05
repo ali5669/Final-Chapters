@@ -28,6 +28,26 @@ const router = createRouter({
           name: 'reader',
           component: () => import('@/views/novel/NovelReader.vue'),
         },
+        {
+          path: 'author',
+          name: 'author',
+          component: () => import('@/views/author/AuthorHome.vue'),
+        },
+        {
+          path: 'author/addWork',
+          name: 'addWork',
+          component: () => import('@/views/author/AddNovel.vue'),
+        },
+        {
+          path: 'author/manageChapters/:novelId',
+          name: 'manageChapters',
+          component: () => import('@/views/author/ManageChapter.vue'),
+        },
+        {
+          path: '/author/addChapter/:novelId',
+          name: 'addChapter',
+          component: () => import('@/views/author/AddChapter.vue'),
+        },
       ],
     },
     {
