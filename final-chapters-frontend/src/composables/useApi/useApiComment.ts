@@ -19,7 +19,7 @@ export interface Rating {
 }
 
 export interface RatingCountDTO {
-  novelId: number
+  rating: number
   count: number
 }
 
