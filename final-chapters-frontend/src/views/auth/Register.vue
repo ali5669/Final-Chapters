@@ -24,17 +24,6 @@
       </div>
 
       <div>
-        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-        <input
-          v-model="email"
-          type="email"
-          id="email"
-          required
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-        />
-      </div>
-
-      <div>
         <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
         <input
           v-model="password"
@@ -56,6 +45,7 @@
           required
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
         />
+        <p v-if="passwordError" class="mt-1 text-sm text-red-600">{{ passwordError }}</p>
       </div>
 
       <div class="flex items-center">
@@ -81,30 +71,6 @@
         Create Account
       </button>
     </form>
-
-    <div class="relative">
-      <div class="absolute inset-0 flex items-center">
-        <div class="w-full border-t border-gray-300"></div>
-      </div>
-      <div class="relative flex justify-center text-sm">
-        <span class="px-2 bg-white text-gray-500">Or continue with</span>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-2 gap-3">
-      <button
-        type="button"
-        class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-      >
-        <span class="ml-2">Google</span>
-      </button>
-      <button
-        type="button"
-        class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-      >
-        <span class="ml-2">Facebook</span>
-      </button>
-    </div>
   </div>
 </template>
 
@@ -117,14 +83,16 @@ const router = useRouter()
 const userStore = useUserStore()
 
 const username = ref('')
-const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
 const acceptTerms = ref(false)
+const passwordError = ref('')
 
 const handleRegister = async () => {
+  passwordError.value = ''
+
   if (password.value !== confirmPassword.value) {
-    console.error('Passwords do not match')
+    passwordError.value = 'Passwords do not match'
     return
   }
 
@@ -132,14 +100,12 @@ const handleRegister = async () => {
     // TODO: Implement actual registration logic
     console.log('Registration attempt:', {
       username: username.value,
-      email: email.value,
       password: password.value,
     })
 
     // Mock successful registration
     const mockUser = {
       id: '1',
-      email: email.value,
       username: username.value,
       createdAt: new Date(),
       updatedAt: new Date(),
