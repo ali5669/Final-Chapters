@@ -1,0 +1,38 @@
+server:
+  port: 8080
+fc:
+  jwt:
+    location: classpath:fc.jks # 秘钥地址
+    alias: finalchapters # 秘钥别名
+    password: final-chapters123456 # 秘钥文件密码
+    tokenTTL: 30m # 登录有效期
+  auth:
+    excludePaths: # 无需登录校验的路径
+      - /users/login
+      - /users/register
+spring:
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      server-addr: 101.201.52.101:8848
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: comment
+              uri: lb://comment-service
+              predicates:
+                - Path=/api/comment/**
+            - id: content
+              uri: lb://content-service
+              predicates:
+                - Path=/api/content/**
+            - id: novel
+              uri: lb://novel-service
+              predicates:
+                - Path=/api/novel/**
+            - id: user
+              uri: lb://user-service
+              predicates:
+                - Path=/api/user/**

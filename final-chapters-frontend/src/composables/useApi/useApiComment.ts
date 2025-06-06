@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { ApiResult } from './useApi'
+import { commentClient, ratingClient, useApiPath, type ApiResult } from './useApi'
 
 export interface Comment {
   commentId: number
@@ -19,7 +19,7 @@ export interface Rating {
 }
 
 export interface RatingCountDTO {
-  novelId: number
+  rating: number
   count: number
 }
 
@@ -42,7 +42,7 @@ export const $comment = {
       content: string
     }
   }) => {
-    const { data } = await axios.post<ApiResult<null>>('/api/comment', params.data)
+    const { data } = await commentClient.post<ApiResult<null>>('', params.data)
     return data
   },
 
@@ -53,7 +53,7 @@ export const $comment = {
    * @response `ApiResult<Comment>`
    */
   getOne: async (id: string) => {
-    const { data } = await axios.get<ApiResult<Comment>>(`/api/comment/${id}`)
+    const { data } = await commentClient.get<ApiResult<Comment>>(`/${id}`)
     return data
   },
 
@@ -64,7 +64,7 @@ export const $comment = {
    * @response `ApiResult<Comment[]>`
    */
   listByNovelId: async (novelId: string) => {
-    const { data } = await axios.get<ApiResult<Comment[]>>(`/api/comment/list/${novelId}`)
+    const { data } = await commentClient.get<ApiResult<Comment[]>>(`/list/${novelId}`)
     return data
   },
 
@@ -75,9 +75,7 @@ export const $comment = {
    * @response `ApiResult<Comment[]>`
    */
   listByChapterId: async (novelId: string, chapterId: string) => {
-    const { data } = await axios.get<ApiResult<Comment[]>>(
-      `/api/comment/list/${novelId}/${chapterId}`,
-    )
+    const { data } = await commentClient.get<ApiResult<Comment[]>>(`/list/${novelId}/${chapterId}`)
     return data
   },
 }
@@ -100,7 +98,7 @@ export const $rating = {
       rating: string
     }
   }) => {
-    const { data } = await axios.post<ApiResult<null>>('/api/rating', params.data)
+    const { data } = await ratingClient.post<ApiResult<null>>('', params.data)
     return data
   },
 
@@ -111,7 +109,7 @@ export const $rating = {
    * @response `ApiResult<number>`
    */
   getAverageRating: async (novelId: string) => {
-    const { data } = await axios.get<ApiResult<number>>(`/api/rating/average/${novelId}`)
+    const { data } = await ratingClient.get<ApiResult<number>>(`/average/${novelId}`)
     return data
   },
 
@@ -122,7 +120,7 @@ export const $rating = {
    * @response `ApiResult<Rating[]>`
    */
   listByNovelId: async (novelId: string) => {
-    const { data } = await axios.get<ApiResult<RatingCountDTO[]>>(`/api/rating/list/${novelId}`)
+    const { data } = await axios.get<ApiResult<RatingCountDTO[]>>(`/list/${novelId}`)
     return data
   },
 }
