@@ -46,6 +46,7 @@
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
         />
         <p v-if="passwordError" class="mt-1 text-sm text-red-600">{{ passwordError }}</p>
+        <p v-if="registerError" class="mt-1 text-sm text-red-600">{{ registerError }}</p>
       </div>
 
       <div class="flex items-center">
@@ -78,6 +79,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import { $user } from '@/composables/useApi/useApiUser'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -87,9 +89,11 @@ const password = ref('')
 const confirmPassword = ref('')
 const acceptTerms = ref(false)
 const passwordError = ref('')
+const registerError = ref('')
 
 const handleRegister = async () => {
   passwordError.value = ''
+  registerError.value = ''
 
   if (password.value !== confirmPassword.value) {
     passwordError.value = 'Passwords do not match'
@@ -97,26 +101,21 @@ const handleRegister = async () => {
   }
 
   try {
-    // TODO: Implement actual registration logic
-    console.log('Registration attempt:', {
-      username: username.value,
-      password: password.value,
+    const response = await $user.register({
+      data: {
+        username: username.value,
+        password: password.value
+      }
     })
 
-    // Mock successful registration
-    const mockUser = {
-      id: '1',
-      username: username.value,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+    if (response.success) {
+      router.push('/auth/login')
+    } else {
+      registerError.value = response.errorMsg || 'Registration failed'
     }
-
-    userStore.setUser(mockUser)
-    userStore.setToken('mock-token')
-
-    router.push('/')
   } catch (error) {
     console.error('Registration failed:', error)
+    registerError.value = 'Registration failed, please try again'
   }
 }
 </script>

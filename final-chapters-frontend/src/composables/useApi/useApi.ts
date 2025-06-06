@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { ref } from 'vue'
 
 // 和后端统一的 Result 返回接口，需要指定 data 类型
@@ -33,3 +34,27 @@ export function useAsyncData(asyncFunction: () => any) {
 
   return { data, error, loading, refresh: fetchData }
 }
+
+// 针对特定微服务的请求封装
+export const commentClient = axios.create({
+  baseURL: 'http://localhost:8080/api/comment',
+  timeout: 5000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})
+
+export const ratingClient = axios.create({
+  baseURL: 'http://localhost:8080/api/rating',
+  timeout: 5000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})
+export const userClient = axios.create({
+  baseURL: 'http://localhost:8083/api/user',
+  timeout: 5000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})
