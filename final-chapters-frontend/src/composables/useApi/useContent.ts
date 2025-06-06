@@ -22,6 +22,13 @@ export interface Chapter {
   updateAt: string
 }
 
+export interface BrowsingHistory {
+  historyId: number
+  userId: number
+  novelId: number
+  lastReadTime: string
+}
+
 /**
  * @name novel
  * @description 小说相关接口集合
@@ -199,6 +206,58 @@ export const $chapter = {
    */
   getOne: async (chapterId: string) => {
     const { data } = await contentClient.get<ApiResult<Chapter>>(`/chapters/${chapterId}`)
+    return data
+  }
+}
+
+/**
+ * @name history
+ * @description 浏览历史相关接口集合
+ */
+export const $history = {
+  /**
+   * @tags 浏览历史
+   * @name getUserHistory
+   * @request GET:/api/history/user/{userId}
+   * @response `ApiResult<BrowsingHistory[]>`
+   */
+  getUserHistory: async (userId: string) => {
+    const { data } = await contentClient.get<ApiResult<BrowsingHistory[]>>(`/history/user/${userId}`)
+    return data
+  },
+
+  /**
+   * @tags 浏览历史
+   * @name getRecentHistory
+   * @request GET:/api/history/user/{userId}/recent
+   * @response `ApiResult<BrowsingHistory[]>`
+   */
+  getRecentHistory: async (userId: string) => {
+    const { data } = await contentClient.get<ApiResult<BrowsingHistory[]>>(`/history/user/${userId}/recent`)
+    return data
+  },
+
+  /**
+   * @tags 浏览历史
+   * @name addHistory
+   * @request POST:/api/history/add
+   * @response `ApiResult<BrowsingHistory>`
+   */
+  addHistory: async (userId: string, novelId: string) => {
+    const { data } = await contentClient.post<ApiResult<BrowsingHistory>>('/history/add', null, {
+      params: { userId, novelId }
+    })
+    return data
+  },
+
+  /**
+   * @tags 浏览历史
+   * @name deleteHistory
+   * @request DELETE:/api/history/{historyId}
+   * @response `ApiResult<void>`
+   */
+  deleteHistory: async (historyId: string) => {
+    const { data } = await contentClient.delete<ApiResult<void>>(`/history/${historyId}`)
     return data
   }
 } 
