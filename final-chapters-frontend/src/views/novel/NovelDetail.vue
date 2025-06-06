@@ -92,9 +92,7 @@
           >
             <div>
               <h3 class="font-medium">第 {{ chapter.order }} 章：{{ chapter.title }}</h3>
-              <p class="text-sm text-gray-500">
-                更新于 {{ formatDate(chapter.updateAt) }}
-              </p>
+              
             </div>
             <router-link
               :to="`/read/${novel.id}/${chapter.chapterId}`"
@@ -161,16 +159,16 @@ const loadChapters = async () => {
   chaptersLoading.value = true
   try {
     const [chaptersResult, countResult] = await Promise.all([
-      $chapter.getChaptersByPage(novelId, currentPage.value, pageSize),
+      $chapter.getChaptersByPage(novelId),
       $chapter.getChapterCount(novelId)
       
     ])
    
-    
+    console.log('数据'+chaptersResult.data)
     if (chaptersResult.success && countResult.success) {
-      console.log(countResult)
+      
       chapters.value = chaptersResult.data
-      chapterCount.value = countResult.data.chapterCount
+      chapterCount.value = countResult.data
     }
   } catch (err) {
     console.error('Failed to load chapters:', err)

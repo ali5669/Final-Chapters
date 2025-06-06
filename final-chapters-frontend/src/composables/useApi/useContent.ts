@@ -195,6 +195,7 @@ export const $chapter = {
     const { data } = await contentClient.get<ApiResult<Chapter[]>>(`/chapters/novel/${novelId}/page`, {
       params: { page, size }
     })
+    console.log(data)
     return data
   },
 

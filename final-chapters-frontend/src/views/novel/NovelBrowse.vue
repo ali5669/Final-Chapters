@@ -42,45 +42,65 @@
     </div>
 
     <!-- History Modal -->
-    <div v-if="showHistoryModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="bg-white rounded-lg p-6 max-w-2xl w-full mx-4">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-xl font-bold">我的收藏历史</h2>
-          <button @click="showHistoryModal = false" class="text-gray-500 hover:text-gray-700">
-            <span class="text-2xl">&times;</span>
+    <div v-if="showHistoryModal" class="fixed inset-0 flex items-center justify-center z-50">
+      <div class="fixed inset-0 bg-gradient-to-br from-gray-600/60 to-gray-800/60" @click="showHistoryModal = false"></div>
+      <div class="relative bg-white rounded-xl shadow-2xl p-8 max-w-2xl w-full mx-4 transform transition-all">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-gray-900">我的收藏</h2>
+          <button 
+            @click="showHistoryModal = false" 
+            class="text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
           </button>
         </div>
         
-        <div v-if="historyLoading" class="flex justify-center py-8">
-          <div class="animate-spin rounded-full h-8 w-8 border-4 border-indigo-500 border-t-transparent"></div>
+        <div v-if="historyLoading" class="flex justify-center py-12">
+          <div class="animate-spin rounded-full h-12 w-12 border-4 border-indigo-500 border-t-transparent"></div>
         </div>
         
-        <div v-else-if="histories.length === 0" class="text-center py-8 text-gray-500">
-          暂无收藏记录
+        <div v-else-if="histories.length === 0" class="flex flex-col items-center justify-center py-12 text-gray-500">
+          <svg class="w-16 h-16 mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+          <p class="text-lg">暂无收藏记录</p>
+          <p class="text-sm mt-2">浏览小说时点击收藏按钮即可添加到这里</p>
         </div>
         
-        <div v-else class="space-y-4">
+        <div v-else class="space-y-4 max-h-[60vh] overflow-y-auto pr-2 -mr-2">
           <div
             v-for="history in histories"
             :key="history.historyId"
-            class="flex items-center justify-between p-4 bg-gray-50 rounded-md"
+            class="group bg-gradient-to-r from-white to-gray-50 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100"
           >
-            <div class="flex-1">
-              <router-link
-                :to="`/novel/${history.novelId}`"
-                class="text-lg font-medium text-indigo-600 hover:text-indigo-700"
-              >
-                {{ getNovelTitle(history.novelId) }}
-              </router-link>
-              <p class="text-sm text-gray-500">最近阅读：{{ formatDate(history.lastReadTime) }}</p>
-            </div>
-            <div class="flex items-center space-x-2">
-              <button
-                @click="deleteHistory(history.historyId)"
-                class="text-red-600 hover:text-red-700 p-2"
-              >
-                删除
-              </button>
+            <div class="p-4">
+              <div class="flex items-start justify-between">
+                <div class="flex-1">
+                  <router-link
+                    :to="`/novel/${history.novelId}`"
+                    class="text-lg font-medium text-gray-900 hover:text-indigo-600 transition-colors line-clamp-1"
+                  >
+                    {{ getNovelTitle(history.novelId) }}
+                  </router-link>
+                  <p class="text-sm text-gray-500 mt-1 flex items-center">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    {{ formatDate(history.lastReadTime) }}
+                  </p>
+                </div>
+                <button
+                  @click="deleteHistory(history.historyId)"
+                  class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-2 text-gray-400 hover:text-red-500 rounded-full hover:bg-red-50"
+                  title="删除收藏"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </div>
