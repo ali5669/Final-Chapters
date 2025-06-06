@@ -24,17 +24,6 @@
       </div>
 
       <div>
-        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-        <input
-          v-model="email"
-          type="email"
-          id="email"
-          required
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-        />
-      </div>
-
-      <div>
         <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
         <input
           v-model="password"
@@ -56,6 +45,8 @@
           required
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
         />
+        <p v-if="passwordError" class="mt-1 text-sm text-red-600">{{ passwordError }}</p>
+        <p v-if="registerError" class="mt-1 text-sm text-red-600">{{ registerError }}</p>
       </div>
 
       <div class="flex items-center">
@@ -81,30 +72,6 @@
         Create Account
       </button>
     </form>
-
-    <div class="relative">
-      <div class="absolute inset-0 flex items-center">
-        <div class="w-full border-t border-gray-300"></div>
-      </div>
-      <div class="relative flex justify-center text-sm">
-        <span class="px-2 bg-white text-gray-500">Or continue with</span>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-2 gap-3">
-      <button
-        type="button"
-        class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-      >
-        <span class="ml-2">Google</span>
-      </button>
-      <button
-        type="button"
-        class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-      >
-        <span class="ml-2">Facebook</span>
-      </button>
-    </div>
   </div>
 </template>
 
@@ -112,45 +79,43 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import { $user } from '@/composables/useApi/useApiUser'
 
 const router = useRouter()
 const userStore = useUserStore()
 
 const username = ref('')
-const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
 const acceptTerms = ref(false)
+const passwordError = ref('')
+const registerError = ref('')
 
 const handleRegister = async () => {
+  passwordError.value = ''
+  registerError.value = ''
+
   if (password.value !== confirmPassword.value) {
-    console.error('Passwords do not match')
+    passwordError.value = 'Passwords do not match'
     return
   }
 
   try {
-    // TODO: Implement actual registration logic
-    console.log('Registration attempt:', {
-      username: username.value,
-      email: email.value,
-      password: password.value,
+    const response = await $user.register({
+      data: {
+        username: username.value,
+        password: password.value
+      }
     })
 
-    // Mock successful registration
-    const mockUser = {
-      id: '1',
-      email: email.value,
-      username: username.value,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+    if (response.success) {
+      router.push('/auth/login')
+    } else {
+      registerError.value = response.errorMsg || 'Registration failed'
     }
-
-    userStore.setUser(mockUser)
-    userStore.setToken('mock-token')
-
-    router.push('/')
   } catch (error) {
     console.error('Registration failed:', error)
+    registerError.value = 'Registration failed, please try again'
   }
 }
 </script>
