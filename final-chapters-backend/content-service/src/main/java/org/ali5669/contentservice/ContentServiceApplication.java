@@ -1,4 +1,4 @@
-package org.ali5669.content;
+package org.ali5669.contentservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

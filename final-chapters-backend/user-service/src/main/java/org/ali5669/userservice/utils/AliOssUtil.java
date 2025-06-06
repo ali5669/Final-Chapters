@@ -1,4 +1,4 @@
-package org.ali5669.userservice.util;
+package org.ali5669.userservice.utils;
 
 import com.aliyun.oss.*;
 import lombok.AllArgsConstructor;

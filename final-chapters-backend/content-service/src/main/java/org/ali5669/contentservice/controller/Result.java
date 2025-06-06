@@ -1,4 +1,4 @@
-package org.ali5669.content.controller;
+package org.ali5669.contentservice.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

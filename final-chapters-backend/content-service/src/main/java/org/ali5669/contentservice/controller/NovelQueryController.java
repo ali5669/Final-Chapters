@@ -1,13 +1,13 @@
-package org.ali5669.content.controller;
+package org.ali5669.contentservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.ali5669.content.entity.Novel;
-import org.ali5669.content.repository.NovelRepository;
+import org.ali5669.contentservice.entity.Novel;
+import org.ali5669.contentservice.repository.NovelRepository;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/novels")
+@RequestMapping("/api/content/novels")
 @RequiredArgsConstructor
 public class NovelQueryController {
     private final NovelRepository novelRepository;

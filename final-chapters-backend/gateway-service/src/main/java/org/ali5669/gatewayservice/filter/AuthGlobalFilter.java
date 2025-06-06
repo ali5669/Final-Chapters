@@ -40,9 +40,9 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
         }
         // 3.获取请求头中的token
         String token = null;
-        List<String> headers = request.getHeaders().get("authorization");
+        List<String> headers = request.getHeaders().get("Authorization");
         if (!CollUtils.isEmpty(headers)) {
-            token = headers.get(0);
+            token = headers.get(0).replace("Bearer ", "").trim();
         }
         // 4.校验并解析token
         Long userId = null;

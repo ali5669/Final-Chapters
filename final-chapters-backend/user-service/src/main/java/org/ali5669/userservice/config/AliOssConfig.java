@@ -1,7 +1,7 @@
 package org.ali5669.userservice.config;
 
 import org.ali5669.userservice.properties.AliOssProperties;
-import org.ali5669.userservice.util.AliOssUtil;
+import org.ali5669.userservice.utils.AliOssUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

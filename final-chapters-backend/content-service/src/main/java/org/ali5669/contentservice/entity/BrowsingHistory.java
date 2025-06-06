@@ -1,4 +1,4 @@
-package org.ali5669.content.entity;
+package org.ali5669.contentservice.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
