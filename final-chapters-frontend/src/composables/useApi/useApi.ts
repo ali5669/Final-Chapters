@@ -51,3 +51,11 @@ export const ratingClient = axios.create({
     'Content-Type': 'application/json',
   },
 })
+
+export const contentClient = axios.create({
+  baseURL: '/api',
+  timeout: 5000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})

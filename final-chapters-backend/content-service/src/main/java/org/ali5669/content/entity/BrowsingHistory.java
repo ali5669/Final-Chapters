@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name = "browsinghistory")
+@Table(name = "browsinghistory", catalog = "content")
 public class BrowsingHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,5 @@ public class BrowsingHistory {
     @Column(name = "last_read_time", nullable = false)
     private LocalDateTime lastReadTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "novel_id", insertable = false, updatable = false)
-    private Novel novel;
+
 } 
