@@ -24,6 +24,7 @@ export interface LoginRequest {
 }
 
 export interface EditProfileRequest {
+  username: string
   profilePicture: File
 }
 
@@ -74,10 +75,9 @@ export const $user = {
   editProfile: async (params: { data: EditProfileRequest }) => {
     const formData = new FormData()
     formData.append('profilePicture', params.data.profilePicture)
-    const { data } = await userClient.post<ApiResult<User>>('/editProfile', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+    formData.append('username', params.data.username)
+    const { data } = await userClient.post<ApiResult<User>>('/editProfile', formData,{
+      headers: { 'Content-Type': 'multipart/form-data' }
     })
     return data
   },

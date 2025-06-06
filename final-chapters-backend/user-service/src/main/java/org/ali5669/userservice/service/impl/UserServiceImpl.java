@@ -3,17 +3,24 @@ package org.ali5669.userservice.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.ali5669.userservice.domain.dto.*;
 import org.ali5669.userservice.domain.po.User;
+import org.ali5669.userservice.domain.vo.ProfileVO;
 import org.ali5669.userservice.exception.BaseException;
 import org.ali5669.userservice.mapper.UserMapper;
 import org.ali5669.userservice.service.IUserService;
+import org.ali5669.userservice.util.AliOssUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements IUserService {
     private final UserMapper userMapper;
-
+    @Autowired
+    private AliOssUtil aliOssUtil;
 
     @Override
     public void register(RegisterDTO registerDTO) {
@@ -52,11 +59,27 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public Result editProfile(EditProfileDTO editProfileDTO) {
+//        System.out.println(editProfileDTO);
+        MultipartFile file = editProfileDTO.getProfilePicture();
         User currentUser = userMapper.findByUsername(editProfileDTO.getUsername());
-
-        currentUser.setProfilePicture(editProfileDTO.getProfilePicture());
+        String originalProfilePicture = file.getOriginalFilename();
+        String type=originalProfilePicture.substring(originalProfilePicture.lastIndexOf(".")+1);
+        String newFilename = UUID.randomUUID().toString().replace("-","")+"."+type;
+        String filePath="";
+        try{
+//            System.out.println("开始上传文件");
+//            System.out.println(aliOssUtil);
+            filePath=aliOssUtil.upload(file.getBytes(),newFilename);
+            System.out.println("文件上传成功");
+        }catch (Exception e){
+            System.out.println("文件上传失败");
+        }
+        currentUser.setProfilePicture(filePath);
         userMapper.updateById(currentUser);
-        return Result.ok();
+        ProfileVO profileVO=new ProfileVO();
+        profileVO.setProfilePicture(filePath);
+        profileVO.setUsername(currentUser.getUsername());
+        return Result.ok(profileVO);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package org.ali5669.userservice.interceptor;
 
-import org.ali5669.userservice.config.JwtProperties;
+import org.ali5669.userservice.properties.JwtProperties;
 import org.ali5669.userservice.context.BaseContext;
 import org.ali5669.userservice.util.JwtUtil;
 import io.jsonwebtoken.Claims;

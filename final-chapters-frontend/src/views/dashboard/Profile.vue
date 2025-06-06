@@ -134,20 +134,23 @@ const handleprofilePictureChange = async (event: Event) => {
     }
 
     // Check file type
-    if (!file.type.startsWith('image/')) {
-      alert('请上传图片文件')
+    const allowedTypes = ['image/jpeg', 'image/png']
+    if (!allowedTypes.includes(file.type)) {
+      alert('请上传 JPG 或 PNG 格式的图片')
       return
     }
 
     try {
       const response = await $user.editProfile({
         data: {
+          username: userStore.currentUser.username,
           profilePicture: file
         }
       })
 
       if (response.success) {
         // Create preview
+        userStore.currentUser.profilePicture=response.data.profilePicture
         const reader = new FileReader()
         reader.onload = (e) => {
           profilePicturePreview.value = e.target?.result as string
@@ -158,9 +161,10 @@ const handleprofilePictureChange = async (event: Event) => {
         if (userStore.currentUser) {
           userStore.setUser({
             ...userStore.currentUser,
-            profilePicture: response.data.profilePicture
+            profilePicture: userStore.currentUser.profilePicture
           })
         }
+        alert('头像上传成功')
       } else {
         alert(response.errorMsg || '头像上传失败')
       }

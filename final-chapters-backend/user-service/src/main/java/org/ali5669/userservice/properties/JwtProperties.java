@@ -1,4 +1,4 @@
-package org.ali5669.userservice.config;
+package org.ali5669.userservice.properties;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;

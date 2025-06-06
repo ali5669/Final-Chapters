@@ -11,8 +11,9 @@ import org.ali5669.userservice.domain.vo.UserLoginVO;
 import org.ali5669.userservice.domain.vo.UserVO;
 import org.ali5669.userservice.service.IUserService;
 import org.ali5669.userservice.util.JwtUtil;
-import org.ali5669.userservice.config.JwtProperties;
+import org.ali5669.userservice.properties.JwtProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.SecureRandom;
@@ -57,8 +58,8 @@ public class UserController {
         return Result.ok();
     }
 
-    @PostMapping("/editProfile")
-    public Result editProfile(@RequestBody EditProfileDTO editProfileDTO) {
+    @PostMapping(value="/editProfile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Result editProfile(@ModelAttribute EditProfileDTO editProfileDTO) {
         return userService.editProfile(editProfileDTO);
     }
 

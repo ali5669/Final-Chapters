@@ -1,11 +1,5 @@
 server:
   port: 8083
-final-chapters:
-  jwt:
-    location: classpath:final-chapters.jks
-    alias: final-chapters
-    password: fc123456
-    tokenTTL: 30m
 spring:
   application:
     name: user-service # 服务名称
