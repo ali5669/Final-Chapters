@@ -69,7 +69,7 @@ export const $user = {
   /**
    * @tags 用户
    * @name editProfile
-   * @request  POST:/api/user/profile
+   * @request  POST:/api/user/editProfile
    * @response `ApiResult<User>`
    */
   editProfile: async (params: { data: EditProfileRequest }) => {
@@ -85,7 +85,7 @@ export const $user = {
   /**
    * @tags 用户
    * @name editPassword
-   * @request  POST:/api/user/password
+   * @request  POST:/api/user/editPassword
    * @response `ApiResult<null>`
    */
   editPassword: async (params: { data: EditPasswordRequest }) => {
@@ -96,7 +96,7 @@ export const $user = {
   /**
    * @tags 用户
    * @name becomeVIP
-   * @request  POST:/api/user/vip
+   * @request  POST:/api/user/becomeVIP
    * @response `ApiResult<User>`
    */
   becomeVIP: async (params: { data: BecomeVIPRequest }) => {
