@@ -34,12 +34,12 @@ public class CommentController {
          return Result.ok(commentService.getOne(Integer.parseInt(id)));
     }
 
-    @GetMapping("/list")
+    @GetMapping("/novelList")
     public Result listByNovelId(@RequestParam("novelId") String novelId){
         return Result.ok(commentService.listByNovelId(Integer.parseInt(novelId)));
     }
 
-    @GetMapping("/list")
+    @GetMapping("/chapterList")
     public Result listByChapterId(@RequestParam("novelId") String novelId, @RequestParam("chapterId") String chapterId){
         return Result.ok(commentService.listByChapterId(Integer.parseInt(novelId), Integer.parseInt(chapterId)));
     }
