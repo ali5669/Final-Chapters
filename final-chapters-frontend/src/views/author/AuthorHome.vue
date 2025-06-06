@@ -37,30 +37,58 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      // 作者信息示例数据
-      author: {
-        avatar: 'http://gips3.baidu.com/it/u=3886271102,3123389489&fm=3028&app=3028&f=JPEG&fmt=auto?w=1280&h=960', // 示例头像
-        username: '作家名', // 示例用户名
-      },
-      // 作家的作品列表
-      authorWorks: [
-        { id: 1, title: '作品一' },
-        { id: 2, title: '作品二' },
-        { id: 3, title: '作品三' },
-      ],
-    };
-  },
-  methods: {
-    addWork() {
-      this.$router.push(`/author/addWork`);
-    },
-    manageChapters(work) {
-      this.$router.push(`/author/manageChapters/${work.id}`);
-    },
-  },
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
+import { $chapter } from '@/composables/useApi/useApiChapter'
+
+const router = useRouter()
+const userStore = useUserStore()
+
+
+
+// Reactive state
+const author = ref({
+  avatar: 'http://gips3.baidu.com/it/u=3886271102,3123389489&fm=3028&app=3028&f=JPEG&fmt=auto?w=1280&h=960',
+  // username: userStore.currentUser.username,
+  username: 'userStore.currentUser.username',
+})
+
+const authorWorks = ref([
+  { id: '13', title: '王者荣耀攻略' },
+  { id: '2', title: '作品二' },
+  { id: '3', title: '作品三' },
+])
+
+// Methods
+const addWork = () => {
+  router.push('/author/addWork')
+}
+
+const manageChapters = (work) => {
+  router.push(`/author/manageChapters/${work.id}`)
+}
+// 查询作者的小说
+const fetchNovelData = async () => {
+
 };
+onMounted(async() => {
+  try{
+    // Mock successful login
+    const mockUser = {
+      id: '12345',
+      email: '123456@example.com',
+      username: 'mockuser',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }
+    userStore.setUser(mockUser)
+    author.value.username = userStore.currentUser.username
+    await Promise.all([fetchNovelData()]);
+  }catch(err){
+    console.error(err)
+  }
+  
+});
 </script>

@@ -51,3 +51,19 @@ export const ratingClient = axios.create({
     'Content-Type': 'application/json',
   },
 })
+
+export const novelClient = axios.create({
+  baseURL: '/api/novel',
+  timeout: 5000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})
+
+export const chapterClient = axios.create({
+  baseURL: '/api/chapter',
+  timeout: 5000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})

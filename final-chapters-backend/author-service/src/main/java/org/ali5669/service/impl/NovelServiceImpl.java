@@ -12,8 +12,9 @@ public class NovelServiceImpl extends ServiceImpl<NovelMapper, Novel> implements
     @Override
     public Result addNovel(Novel novel) {
         if(save(novel)){
-            return Result.ok();
+            Integer novelId = novel.getNovelId();
+            return Result.ok(Integer.toString(novelId));
         }
-        return Result.fail("create comment failed");
+        return Result.fail("create novel failed");
     }
 }

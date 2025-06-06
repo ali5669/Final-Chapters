@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/api/comment")
+@RequestMapping("/api/novel")
 @RequiredArgsConstructor
 public class NovelController {
     private final INovelService novelService;
 
-    @PostMapping
+    @PostMapping("/addNovel")
     public Result addNovel(@RequestBody NovelCreateDTO createDTO) {
         Integer authorIdInt = Integer.parseInt(createDTO.getAuthorId());
         String title = createDTO.getTitle();

@@ -16,8 +16,9 @@
       <h3>章节列表</h3>
       <ul>
         <li v-for="chapter in chapters" :key="chapter.id" class="chapter-item">
+          <span>{{ chapter.order }}</span>
           <span>{{ chapter.title }}</span>
-          <button @click="deleteChapter(chapter.id)">删除</button>
+          <!-- <button @click="deleteChapter(chapter.id)">删除</button> -->
         </li>
       </ul>
     </div>
@@ -31,6 +32,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { $chapter } from '@/composables/useApi/useApiChapter'
 import axios from 'axios';
 
 const route = useRoute();
@@ -68,10 +70,12 @@ const fetchChapters = async () => {
 //   } catch (error) {
 //     console.error('获取章节列表失败:', error);
 //   }
-    chapters.value = [
-      { id: 1, title: '章节1', content: '章节内容1' },
-      { id: 2, title: '章节2', content: '章节内容2' },
-    ];
+  const { data: chapterList } = await $chapter.getChapters({data:{novelId:novelId}});
+  chapters.value = chapterList;
+  // chapters.value = [
+  //   { id: 1, title: '章节1', content: '章节内容1' },
+  //   { id: 2, title: '章节2', content: '章节内容2' },
+  // ];
 };
 
 // 删除章节
