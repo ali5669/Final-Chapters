@@ -1,7 +1,9 @@
 package org.ali5669.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.ali5669.domain.dto.AuthorIdDTO;
 import org.ali5669.domain.dto.NovelCreateDTO;
+import org.ali5669.domain.dto.NovelIdDTO;
 import org.ali5669.domain.dto.Result;
 import org.ali5669.domain.po.Novel;
 import org.ali5669.service.INovelService;
@@ -33,5 +35,18 @@ public class NovelController {
         novel.setTags(tags);
 
         return novelService.addNovel(novel);
+    }
+    @PostMapping("/getNovels")
+    public Result getNovels(@RequestBody AuthorIdDTO authorIdDTO) {
+        Integer authorIdInt = Integer.parseInt(authorIdDTO.getAuthorId());
+
+        return novelService.getNovelsByAuthorId(authorIdInt);
+    }
+
+    @PostMapping("/getNovelById")
+    public Result getNovels(@RequestBody NovelIdDTO novelIdDTO) {
+        Integer novelIdInt = Integer.parseInt(novelIdDTO.getNovelId());
+
+        return novelService.getNovelsByNovelId(novelIdInt);
     }
 }

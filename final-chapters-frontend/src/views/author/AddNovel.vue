@@ -92,10 +92,13 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
-import { useAsyncData } from '@/composables/useApi/useApi'
 import { $novel } from '@/composables/useApi/useApiNovel'
+import { useUserStore } from '@/stores/user'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+const userStore = useUserStore()
 const authorId = userStore.currentUser.id;
 
 // 初始化小说对象
