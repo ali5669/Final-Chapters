@@ -1,5 +1,15 @@
 server:
   port: 8080
+fc:
+  jwt:
+    location: classpath:fc.jks # 秘钥地址
+    alias: finalchapters # 秘钥别名
+    password: final-chapters123456 # 秘钥文件密码
+    tokenTTL: 30m # 登录有效期
+  auth:
+    excludePaths: # 无需登录校验的路径
+      - /users/login
+      - /users/register
 spring:
   application:
     name: gateway
