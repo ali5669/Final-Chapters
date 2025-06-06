@@ -1,0 +1,19 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: comment-service
+  datasource:
+    url: jdbc:mysql://101.201.52.101:3306/comment?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: final-chapters123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    nacos:
+      server-addr: 101.201.52.101:8848
+mybatis-plus:
+  type-aliases-package: com.ali5669.commentservice.domain.po # 别名扫描包
+logging:
+  level:
+    com.ali5669.commentservice: debug

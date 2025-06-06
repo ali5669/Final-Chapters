@@ -28,6 +28,7 @@ qin<!-- src/layouts/DefaultLayout.vue -->
         </router-link>
         <!-- 导航项 -->
         <div class="hidden md:flex items-center space-x-8">
+          <router-link to="/author" class="nav-link">作者中心</router-link>
           <router-link to="/browse" class="nav-link">浏览</router-link>
           <template v-if="userStore.isAuthenticated">
             <router-link to="/dashboard/library" class="nav-link">我的书架</router-link>

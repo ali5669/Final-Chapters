@@ -16,17 +16,37 @@ const router = createRouter({
         {
           path: 'browse',
           name: 'browse',
-          component: () => import('@/views/NovelBrowse.vue'),
+          component: () => import('@/views/novel/NovelBrowse.vue'),
         },
         {
           path: 'novel/:id',
           name: 'novel-detail',
-          component: () => import('@/views/NovelDetail.vue'),
+          component: () => import('@/views/novel/NovelDetail.vue'),
         },
         {
           path: 'read/:novelId/:chapterId',
           name: 'reader',
-          component: () => import('@/views/NovelReader.vue'),
+          component: () => import('@/views/novel/NovelReader.vue'),
+        },
+        {
+          path: 'author',
+          name: 'author',
+          component: () => import('@/views/author/AuthorHome.vue'),
+        },
+        {
+          path: 'author/addWork',
+          name: 'addWork',
+          component: () => import('@/views/author/AddNovel.vue'),
+        },
+        {
+          path: 'author/manageChapters/:novelId',
+          name: 'manageChapters',
+          component: () => import('@/views/author/ManageChapter.vue'),
+        },
+        {
+          path: '/author/addChapter/:novelId',
+          name: 'addChapter',
+          component: () => import('@/views/author/AddChapter.vue'),
         },
       ],
     },
