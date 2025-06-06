@@ -1,0 +1,19 @@
+server:
+  port: 8081
+fc:
+  jwt:
+    location: classpath:fc.jks # 秘钥地址
+    alias: finalchapters # 秘钥别名
+    password: final-chapters123456 # 秘钥文件密码
+    tokenTTL: 30m # 登录有效期
+spring:
+  application:
+    name: user-service # 服务名称
+  datasource:
+    url: jdbc:mysql://101.201.52.101:3306/user?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password: final-chapters123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    nacos:
+      server-addr: 101.201.52.101:8848

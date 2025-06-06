@@ -9,13 +9,13 @@
             </router-link>
             <div class="hidden md:flex space-x-4">
               <router-link to="/dashboard/profile" class="text-gray-600 hover:text-indigo-600">
-                Profile
+                个人设置
               </router-link>
               <router-link to="/dashboard/library" class="text-gray-600 hover:text-indigo-600">
-                My Library
+                我的书架
               </router-link>
               <router-link to="/dashboard/write" class="text-gray-600 hover:text-indigo-600">
-                Write
+                写作
               </router-link>
             </div>
           </div>

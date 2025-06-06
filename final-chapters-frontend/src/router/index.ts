@@ -57,7 +57,7 @@ const router = createRouter({
         {
           path: 'login',
           name: 'login',
-          component: () => import('@/views/auth/UserLogin.vue'),
+          component: () => import('@/views/auth/Login.vue'),
         },
         {
           path: 'register',
@@ -71,6 +71,11 @@ const router = createRouter({
       component: () => import('@/layouts/DashboardLayout.vue'),
       meta: { requiresAuth: true },
       children: [
+        {
+          path: 'profile',
+          name: 'profile',
+          component: () => import('@/views/dashboard/Profile.vue'),
+        },
         {
           path: 'library',
           name: 'library',

@@ -1,10 +1,8 @@
 export interface User {
-  id: string
-  email: string
+  userId: number
   username: string
-  avatar?: string
-  createdAt: Date
-  updatedAt: Date
+  isVIP: boolean
+  profilePicture?: string
 }
 
 export interface UserProfile extends User {
