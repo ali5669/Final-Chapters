@@ -3,23 +3,23 @@
   <div class="space-y-8">
     <!-- Loading State -->
     <div v-if="loading" class="flex justify-center py-8">
-      <div class="animate-spin rounded-full h-12 w-12 border-4 border-indigo-500 border-t-transparent"></div>
+      <div
+        class="animate-spin rounded-full h-12 w-12 border-4 border-indigo-500 border-t-transparent"
+      ></div>
     </div>
 
     <!-- Error State -->
-    <div v-else-if="error" class="text-center py-8 text-red-500">
-      加载失败，请稍后重试
-    </div>
+    <div v-else-if="error" class="text-center py-8 text-red-500">加载失败，请稍后重试</div>
 
     <template v-else>
       <!-- Novel Header -->
       <div class="bg-white rounded-lg shadow-sm p-6">
         <div class="flex flex-col md:flex-row gap-8">
           <div class="w-full md:w-64">
-            <img 
-              :src="novel.coverImage || '/images/default-cover.jpg'" 
-              :alt="novel.title" 
-              class="w-full h-80 object-cover rounded-lg" 
+            <img
+              :src="novel.coverImage || '/images/default-cover.jpg'"
+              :alt="novel.title"
+              class="w-full h-80 object-cover rounded-lg"
             />
           </div>
           <div class="flex-1 space-y-4">
@@ -73,17 +73,17 @@
               v-model="currentPage"
               class="px-3 py-1 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
             >
-              <option v-for="page in totalPages" :key="page" :value="page">
-                第 {{ page }} 页
-              </option>
+              <option v-for="page in totalPages" :key="page" :value="page">第 {{ page }} 页</option>
             </select>
           </div>
         </div>
-        
+
         <div v-if="chaptersLoading" class="flex justify-center py-8">
-          <div class="animate-spin rounded-full h-8 w-8 border-4 border-indigo-500 border-t-transparent"></div>
+          <div
+            class="animate-spin rounded-full h-8 w-8 border-4 border-indigo-500 border-t-transparent"
+          ></div>
         </div>
-        
+
         <div v-else class="space-y-2">
           <div
             v-for="chapter in chapters"
@@ -92,9 +92,7 @@
           >
             <div>
               <h3 class="font-medium">第 {{ chapter.order }} 章：{{ chapter.title }}</h3>
-              <p class="text-sm text-gray-500">
-                更新于 {{ formatDate(chapter.updateAt) }}
-              </p>
+              <p class="text-sm text-gray-500">更新于 {{ formatDate(chapter.updateAt) }}</p>
             </div>
             <router-link
               :to="`/read/${novel.id}/${chapter.chapterId}`"
@@ -129,9 +127,8 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { $novel, $chapter, $history } from '../../composables/useApi/useContent'
-import type { Novel, Chapter, BrowsingHistory } from '../../composables/useApi/useContent'
+import type { Novel, Chapter } from '../../composables/useApi/useContent'
 import { useAsyncData } from '../../composables/useApi/useApi'
-import { useUserStore } from '@/stores/user'
 
 const route = useRoute()
 const router = useRouter()
@@ -141,11 +138,15 @@ const novelId = route.params.id as string
 const { data: novelData, loading, error } = useAsyncData(() => $novel.getOne(novelId))
 const novel = ref<Novel | null>(null)
 
-watch(novelData, (newData) => {
-  if (newData?.success) {
-    novel.value = newData.data
-  }
-}, { immediate: true })
+watch(
+  novelData,
+  (newData) => {
+    if (newData?.success) {
+      novel.value = newData.data
+    }
+  },
+  { immediate: true },
+)
 
 // 章节数据
 const pageSize = 20
@@ -162,11 +163,9 @@ const loadChapters = async () => {
   try {
     const [chaptersResult, countResult] = await Promise.all([
       $chapter.getChaptersByPage(novelId, currentPage.value, pageSize),
-      $chapter.getChapterCount(novelId)
-      
+      $chapter.getChapterCount(novelId),
     ])
-   
-    
+
     if (chaptersResult.success && countResult.success) {
       console.log(countResult)
       chapters.value = chaptersResult.data
@@ -186,17 +185,13 @@ watch(currentPage, () => {
 
 // 收藏功能
 const isBookmarked = ref(false)
-// const userStore = useUserStore()
 const checkIfBookmarked = async () => {
   try {
-    // TODO: 替换为实际的用户ID
-    const userId = '1'
     // const userId = userStore.currentUser
-    const result = await $history.getUserHistory(userId)
-    
+    const result = await $history.getUserHistory()
 
     if (result.success) {
-      isBookmarked.value = result.data.some(h => h.novelId === Number(novelId))
+      isBookmarked.value = result.data.some((h) => h.novelId === Number(novelId))
     }
   } catch (err) {
     console.error('Failed to check bookmark status:', err)
@@ -205,14 +200,11 @@ const checkIfBookmarked = async () => {
 
 const toggleBookmark = async () => {
   try {
-    // TODO: 替换为实际的用户ID
-    const userId = '1'
-    
     if (isBookmarked.value) {
       // 查找并删除收藏
-      const result = await $history.getUserHistory(userId)
+      const result = await $history.getUserHistory()
       if (result.success) {
-        const history = result.data.find(h => h.novelId === Number(novelId))
+        const history = result.data.find((h) => h.novelId === Number(novelId))
         if (history) {
           await $history.deleteHistory(history.historyId.toString())
           isBookmarked.value = false
@@ -220,7 +212,7 @@ const toggleBookmark = async () => {
       }
     } else {
       // 添加收藏
-      const result = await $history.addHistory(userId, novelId)
+      const result = await $history.addHistory(novelId)
       if (result.success) {
         isBookmarked.value = true
       }
@@ -241,7 +233,7 @@ const startReading = async () => {
 // 处理标签
 const getTags = (tags: string | null): string[] => {
   if (!tags) return []
-  return tags.split(',').map(tag => tag.trim())
+  return tags.split(',').map((tag) => tag.trim())
 }
 
 // 格式化日期
@@ -252,7 +244,7 @@ const formatDate = (dateString: string) => {
     month: 'long',
     day: 'numeric',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
   })
 }
 

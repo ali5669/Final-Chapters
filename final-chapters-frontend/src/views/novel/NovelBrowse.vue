@@ -42,7 +42,10 @@
     </div>
 
     <!-- History Modal -->
-    <div v-if="showHistoryModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div
+      v-if="showHistoryModal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    >
       <div class="bg-white rounded-lg p-6 max-w-2xl w-full mx-4">
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-xl font-bold">我的收藏历史</h2>
@@ -50,15 +53,17 @@
             <span class="text-2xl">&times;</span>
           </button>
         </div>
-        
+
         <div v-if="historyLoading" class="flex justify-center py-8">
-          <div class="animate-spin rounded-full h-8 w-8 border-4 border-indigo-500 border-t-transparent"></div>
+          <div
+            class="animate-spin rounded-full h-8 w-8 border-4 border-indigo-500 border-t-transparent"
+          ></div>
         </div>
-        
+
         <div v-else-if="histories.length === 0" class="text-center py-8 text-gray-500">
           暂无收藏记录
         </div>
-        
+
         <div v-else class="space-y-4">
           <div
             v-for="history in histories"
@@ -89,13 +94,13 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="flex justify-center py-8">
-      <div class="animate-spin rounded-full h-12 w-12 border-4 border-indigo-500 border-t-transparent"></div>
+      <div
+        class="animate-spin rounded-full h-12 w-12 border-4 border-indigo-500 border-t-transparent"
+      ></div>
     </div>
 
     <!-- Error State -->
-    <div v-else-if="error" class="text-center py-8 text-red-500">
-      加载失败，请稍后重试
-    </div>
+    <div v-else-if="error" class="text-center py-8 text-red-500">加载失败，请稍后重试</div>
 
     <!-- Novel Grid -->
     <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -104,9 +109,9 @@
         :key="novel.id"
         class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
       >
-        <img 
-          :src="novel.coverImage || '/images/default-cover.jpg'" 
-          :alt="novel.title" 
+        <img
+          :src="novel.coverImage || '/images/default-cover.jpg'"
+          :alt="novel.title"
           class="w-full h-48 object-cover"
         />
         <div class="p-4">
@@ -140,7 +145,10 @@
     </div>
 
     <!-- Empty State -->
-    <div v-if="!loading && !error && displayedNovels.length === 0" class="text-center py-8 text-gray-500">
+    <div
+      v-if="!loading && !error && displayedNovels.length === 0"
+      class="text-center py-8 text-gray-500"
+    >
       没有找到相关小说
     </div>
 
@@ -164,7 +172,6 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
 import { $novel, $history } from '../../composables/useApi/useContent'
 import type { Novel, BrowsingHistory } from '../../composables/useApi/useContent'
 import { useAsyncData } from '../../composables/useApi/useApi'
@@ -176,27 +183,22 @@ const currentPage = ref(1)
 const pageSize = 12
 
 // 预设分类列表
-const categories = ref([
-  '奇幻',
-  '科幻',
-  '言情',
-  '悬疑',
-  '冒险',
-  '恐怖',
-  '历史',
-  '现代'
-])
+const categories = ref(['奇幻', '科幻', '言情', '悬疑', '冒险', '恐怖', '历史', '现代'])
 
 // 获取小说列表
 const { data: novelData, loading, error, refresh } = useAsyncData(() => $novel.getAll())
 
 // 从 API 响应中提取小说数据
 const novels = ref<Novel[]>([])
-watch(novelData, (newData) => {
-  if (newData?.success) {
-    novels.value = newData.data
-  }
-}, { immediate: true })
+watch(
+  novelData,
+  (newData) => {
+    if (newData?.success) {
+      novels.value = newData.data
+    }
+  },
+  { immediate: true },
+)
 
 // 处理搜索
 const handleSearch = async () => {
@@ -225,12 +227,12 @@ const handleCategoryChange = async () => {
 // 处理标签字符串
 const getTags = (tags: string | null): string[] => {
   if (!tags) return []
-  return tags.split(',').map(tag => tag.trim())
+  return tags.split(',').map((tag) => tag.trim())
 }
 
 // 计算属性：过滤和排序后的小说列表
 const filteredNovels = computed(() => {
-  let result = [...novels.value]
+  const result = [...novels.value]
 
   // 排序
   switch (sortBy.value) {
@@ -277,9 +279,7 @@ const novelTitles = ref<Record<number, string>>({})
 const loadHistories = async () => {
   historyLoading.value = true
   try {
-    // TODO: 替换为实际的用户ID
-    const userId = '1'
-    const result = await $history.getUserHistory(userId)
+    const result = await $history.getUserHistory()
     if (result.success) {
       histories.value = result.data
       // 获取所有小说的标题
@@ -289,7 +289,7 @@ const loadHistories = async () => {
           if (novelResult.success) {
             novelTitles.value[history.novelId] = novelResult.data.title
           }
-        })
+        }),
       )
     }
   } catch (err) {
@@ -304,7 +304,7 @@ const deleteHistory = async (historyId: number) => {
   try {
     const result = await $history.deleteHistory(historyId.toString())
     if (result.success) {
-      histories.value = histories.value.filter(h => h.historyId !== historyId)
+      histories.value = histories.value.filter((h) => h.historyId !== historyId)
     }
   } catch (err) {
     console.error('Failed to delete history:', err)
@@ -324,7 +324,7 @@ const formatDate = (dateString: string) => {
     month: 'long',
     day: 'numeric',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
   })
 }
 

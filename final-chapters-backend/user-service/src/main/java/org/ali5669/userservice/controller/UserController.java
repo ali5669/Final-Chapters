@@ -36,9 +36,10 @@ public class UserController {
     public Result login(@RequestBody LoginFormDTO loginFormDTO) {
         User user = userService.login(loginFormDTO);
         Map<String, Object> claims = new HashMap<>();
-        claims.put("empId", user.getId());
-        String token = jwtTool.createToken(user.getId(), jwtProperties.getTokenTTL());
+        claims.put("empId", user.getUserId());
+        String token = jwtTool.createToken(user.getUserId(), jwtProperties.getTokenTTL());
         UserVO userVO = UserVO.builder()
+                .userId(user.getUserId())
                 .username(user.getUsername())
                 .isVIP(user.getIsVip())
                 .profilePicture(user.getProfilePicture())

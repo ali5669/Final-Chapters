@@ -15,7 +15,7 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value="user_id",type=IdType.AUTO)
-    private Long id;
+    private Long userId;
     private Boolean isVip;
     private String username;
     private String password;

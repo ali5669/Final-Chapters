@@ -8,10 +8,7 @@ public class UserContext {
         tl.set(userId);
     }
 
-    public static Long getUserId()
-    {
-        return tl.get();
-    }
+    public static Long getUserId(){ return tl.get(); }
 
     public static void clear()
     {

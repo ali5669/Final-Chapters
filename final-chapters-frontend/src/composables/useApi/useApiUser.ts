@@ -3,6 +3,7 @@ import type { ApiResult } from './useApi'
 import { userClient } from './useApi'
 
 export interface User {
+  userId: number
   username: string
   isVIP: boolean
   profilePicture?: string
@@ -76,8 +77,8 @@ export const $user = {
     const formData = new FormData()
     formData.append('profilePicture', params.data.profilePicture)
     formData.append('username', params.data.username)
-    const { data } = await userClient.post<ApiResult<User>>('/editProfile', formData,{
-      headers: { 'Content-Type': 'multipart/form-data' }
+    const { data } = await userClient.post<ApiResult<User>>('/editProfile', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
     })
     return data
   },

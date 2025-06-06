@@ -42,7 +42,7 @@ export const $novel = {
    */
   getAll: async () => {
     const { data } = await contentClient.get<ApiResult<Novel[]>>('/novels/all')
-    console.log('getall',data)
+    console.log('getall', data)
     return data
   },
 
@@ -65,7 +65,7 @@ export const $novel = {
    */
   searchByTitle: async (keyword: string) => {
     const { data } = await contentClient.get<ApiResult<Novel[]>>('/novels/search/title', {
-      params: { keyword }
+      params: { keyword },
     })
     return data
   },
@@ -78,7 +78,7 @@ export const $novel = {
    */
   searchByCategory: async (category: string) => {
     const { data } = await contentClient.get<ApiResult<Novel[]>>('/novels/search/category', {
-      params: { category }
+      params: { category },
     })
     return data
   },
@@ -91,7 +91,7 @@ export const $novel = {
    */
   searchByTag: async (tag: string) => {
     const { data } = await contentClient.get<ApiResult<Novel[]>>('/novels/search/tag', {
-      params: { tag }
+      params: { tag },
     })
     return data
   },
@@ -103,7 +103,9 @@ export const $novel = {
    * @response `ApiResult<Novel[]>`
    */
   searchByAuthor: async (authorId: string) => {
-    const { data } = await contentClient.get<ApiResult<Novel[]>>(`/novels/search/author/${authorId}`)
+    const { data } = await contentClient.get<ApiResult<Novel[]>>(
+      `/novels/search/author/${authorId}`,
+    )
     return data
   },
 
@@ -113,14 +115,10 @@ export const $novel = {
    * @request GET:/api/novels/search
    * @response `ApiResult<Novel[]>`
    */
-  search: async (params: {
-    title?: string
-    category?: string
-    tag?: string
-  }) => {
+  search: async (params: { title?: string; category?: string; tag?: string }) => {
     const { data } = await contentClient.get<ApiResult<Novel[]>>('/novels/search', { params })
     return data
-  }
+  },
 }
 
 /**
@@ -146,7 +144,9 @@ export const $chapter = {
    * @response `ApiResult<Chapter>`
    */
   getLatestChapter: async (novelId: string) => {
-    const { data } = await contentClient.get<ApiResult<Chapter>>(`/chapters/novel/${novelId}/latest`)
+    const { data } = await contentClient.get<ApiResult<Chapter>>(
+      `/chapters/novel/${novelId}/latest`,
+    )
     return data
   },
 
@@ -157,7 +157,9 @@ export const $chapter = {
    * @response `ApiResult<Chapter>`
    */
   getChapterByOrder: async (novelId: string, order: number) => {
-    const { data } = await contentClient.get<ApiResult<Chapter>>(`/chapters/novel/${novelId}/order/${order}`)
+    const { data } = await contentClient.get<ApiResult<Chapter>>(
+      `/chapters/novel/${novelId}/order/${order}`,
+    )
     return data
   },
 
@@ -168,7 +170,9 @@ export const $chapter = {
    * @response `ApiResult<{ chapterCount: number }>`
    */
   getChapterCount: async (novelId: string) => {
-    const { data } = await contentClient.get<ApiResult<{ chapterCount: number }>>(`/chapters/novel/${novelId}/count`)
+    const { data } = await contentClient.get<ApiResult<{ chapterCount: number }>>(
+      `/chapters/novel/${novelId}/count`,
+    )
     return data
   },
 
@@ -179,9 +183,12 @@ export const $chapter = {
    * @response `ApiResult<Chapter[]>`
    */
   searchChaptersByTitle: async (novelId: string, keyword: string) => {
-    const { data } = await contentClient.get<ApiResult<Chapter[]>>(`/chapters/novel/${novelId}/search`, {
-      params: { keyword }
-    })
+    const { data } = await contentClient.get<ApiResult<Chapter[]>>(
+      `/chapters/novel/${novelId}/search`,
+      {
+        params: { keyword },
+      },
+    )
     return data
   },
 
@@ -192,9 +199,12 @@ export const $chapter = {
    * @response `ApiResult<Chapter[]>`
    */
   getChaptersByPage: async (novelId: string, page: number = 1, size: number = 20) => {
-    const { data } = await contentClient.get<ApiResult<Chapter[]>>(`/chapters/novel/${novelId}/page`, {
-      params: { page, size }
-    })
+    const { data } = await contentClient.get<ApiResult<Chapter[]>>(
+      `/chapters/novel/${novelId}/page`,
+      {
+        params: { page, size },
+      },
+    )
     return data
   },
 
@@ -207,7 +217,7 @@ export const $chapter = {
   getOne: async (chapterId: string) => {
     const { data } = await contentClient.get<ApiResult<Chapter>>(`/chapters/${chapterId}`)
     return data
-  }
+  },
 }
 
 /**
@@ -218,22 +228,22 @@ export const $history = {
   /**
    * @tags 浏览历史
    * @name getUserHistory
-   * @request GET:/api/history/user/{userId}
+   * @request GET:/api/history
    * @response `ApiResult<BrowsingHistory[]>`
    */
-  getUserHistory: async (userId: string) => {
-    const { data } = await contentClient.get<ApiResult<BrowsingHistory[]>>(`/history/user/${userId}`)
+  getUserHistory: async () => {
+    const { data } = await contentClient.get<ApiResult<BrowsingHistory[]>>(`/history`)
     return data
   },
 
   /**
    * @tags 浏览历史
    * @name getRecentHistory
-   * @request GET:/api/history/user/{userId}/recent
+   * @request GET:/api/history/recent
    * @response `ApiResult<BrowsingHistory[]>`
    */
-  getRecentHistory: async (userId: string) => {
-    const { data } = await contentClient.get<ApiResult<BrowsingHistory[]>>(`/history/user/${userId}/recent`)
+  getRecentHistory: async () => {
+    const { data } = await contentClient.get<ApiResult<BrowsingHistory[]>>(`/history/recent`)
     return data
   },
 
@@ -243,9 +253,9 @@ export const $history = {
    * @request POST:/api/history/add
    * @response `ApiResult<BrowsingHistory>`
    */
-  addHistory: async (userId: string, novelId: string) => {
+  addHistory: async (novelId: string) => {
     const { data } = await contentClient.post<ApiResult<BrowsingHistory>>('/history/add', null, {
-      params: { userId, novelId }
+      params: { novelId },
     })
     return data
   },
@@ -259,5 +269,5 @@ export const $history = {
   deleteHistory: async (historyId: string) => {
     const { data } = await contentClient.delete<ApiResult<void>>(`/history/${historyId}`)
     return data
-  }
-} 
+  },
+}
