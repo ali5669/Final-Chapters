@@ -35,6 +35,7 @@ export const $novel = {
    */
   getAll: async () => {
     const { data } = await contentClient.get<ApiResult<Novel[]>>('/novels/all')
+    console.log('getall',data)
     return data
   },
 
