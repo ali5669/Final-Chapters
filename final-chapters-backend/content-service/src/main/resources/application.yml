@@ -1,17 +1,11 @@
 server:
   port: 8083
-fc:
-  jwt:
-    location: classpath:fc.jks # 秘钥地址
-    alias: finalchapters # 秘钥别名
-    password: final-chapters123456 # 秘钥文件密码
-    tokenTTL: 30m # 登录有效期
 spring:
   application:
     name: content-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://101.201.52.101:3306?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    url: jdbc:mysql://101.201.52.101:3306/novel?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
     username: root
     password: final-chapters123456
   jpa:
