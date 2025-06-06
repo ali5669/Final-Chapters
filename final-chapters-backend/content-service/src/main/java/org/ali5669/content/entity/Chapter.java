@@ -11,7 +11,7 @@ public class Chapter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "chapter_id")
-    private Long id;
+    private Long chapterId;
     
     @Column(name = "novel_id")
     private Long novelId;
