@@ -1,0 +1,4 @@
+jwt:
+  user:
+    ttl: 86400000 # 24小时
+    token-name: Authorization
