@@ -1,6 +1,6 @@
-package org.ali5669.content.repository;
+package org.ali5669.contentservice.repository;
 
-import org.ali5669.content.entity.Chapter;
+import org.ali5669.contentservice.entity.Chapter;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

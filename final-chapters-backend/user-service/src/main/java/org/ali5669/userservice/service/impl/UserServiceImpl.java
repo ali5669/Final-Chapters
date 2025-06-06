@@ -7,7 +7,7 @@ import org.ali5669.userservice.domain.vo.ProfileVO;
 import org.ali5669.userservice.exception.BaseException;
 import org.ali5669.userservice.mapper.UserMapper;
 import org.ali5669.userservice.service.IUserService;
-import org.ali5669.userservice.util.AliOssUtil;
+import org.ali5669.userservice.utils.AliOssUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;

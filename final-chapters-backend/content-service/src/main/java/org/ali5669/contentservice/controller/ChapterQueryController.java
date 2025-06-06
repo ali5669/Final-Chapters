@@ -1,13 +1,13 @@
-package org.ali5669.content.controller;
+package org.ali5669.contentservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.ali5669.content.entity.Chapter;
-import org.ali5669.content.repository.ChapterRepository;
+import org.ali5669.contentservice.entity.Chapter;
+import org.ali5669.contentservice.repository.ChapterRepository;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/chapters")
+@RequestMapping("/api/content/chapters")
 @RequiredArgsConstructor
 public class ChapterQueryController {
     private final ChapterRepository chapterRepository;

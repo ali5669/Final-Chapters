@@ -1,8 +1,8 @@
-package org.ali5669.content.controller;
+package org.ali5669.contentservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.ali5669.content.entity.BrowsingHistory;
-import org.ali5669.content.repository.BrowsingHistoryRepository;
+import org.ali5669.contentservice.entity.BrowsingHistory;
+import org.ali5669.contentservice.repository.BrowsingHistoryRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;

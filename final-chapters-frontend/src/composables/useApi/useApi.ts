@@ -1,3 +1,4 @@
+import { useUserStore } from '@/stores/user'
 import axios from 'axios'
 import { ref } from 'vue'
 
@@ -35,36 +36,74 @@ export function useAsyncData(asyncFunction: () => any) {
   return { data, error, loading, refresh: fetchData }
 }
 
+const userStore = useUserStore()
+
 // 针对特定微服务的请求封装
 export const commentClient = axios.create({
-  baseURL: 'http://localhost:8080/api/comment',
+  baseURL: '/api/comment',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
+    Authorization: `Bearer ${userStore.token}`,
   },
+})
+
+// 添加请求拦截器，动态添加 token
+commentClient.interceptors.request.use((config) => {
+  const token = userStore.token
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
 })
 
 export const ratingClient = axios.create({
-  baseURL: 'http://localhost:8080/api/rating',
+  baseURL: '/api/rating',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
+    Authorization: `Bearer ${userStore.token}`,
   },
 })
 
+ratingClient.interceptors.request.use((config) => {
+  const token = userStore.token
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
+})
 
 export const contentClient = axios.create({
-  baseURL: '/api',
+  baseURL: '/api/content',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
+    Authorization: `Bearer ${userStore.token}`,
   },
+})
+
+contentClient.interceptors.request.use((config) => {
+  const token = userStore.token
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
 })
 
 export const userClient = axios.create({
-  baseURL: 'http://localhost:8083/api/user',
+  baseURL: '/api/user',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
+    Authorization: `Bearer ${userStore.token}`,
   },
+})
+
+userClient.interceptors.request.use((config) => {
+  const token = userStore.token
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
 })

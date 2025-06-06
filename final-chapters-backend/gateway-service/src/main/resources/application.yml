@@ -8,8 +8,8 @@ fc:
     tokenTTL: 30m # 登录有效期
   auth:
     excludePaths: # 无需登录校验的路径
-      - /users/login
-      - /users/register
+      - /api/user/login
+      - /api/user/register
 spring:
   application:
     name: gateway

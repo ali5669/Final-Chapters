@@ -1,5 +1,6 @@
 package org.ali5669.userservice.controller;
 
+import org.ali5669.userservice.config.JwtProperties;
 import org.ali5669.userservice.domain.dto.BecomeVipDTO;
 import org.ali5669.userservice.domain.dto.EditPasswordDTO;
 import org.ali5669.userservice.domain.dto.EditProfileDTO;
@@ -10,8 +11,7 @@ import org.ali5669.userservice.domain.po.User;
 import org.ali5669.userservice.domain.vo.UserLoginVO;
 import org.ali5669.userservice.domain.vo.UserVO;
 import org.ali5669.userservice.service.IUserService;
-import org.ali5669.userservice.util.JwtUtil;
-import org.ali5669.userservice.properties.JwtProperties;
+import org.ali5669.userservice.utils.JwtTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +28,8 @@ public class UserController {
     private IUserService userService;
     @Autowired
     private JwtProperties jwtProperties;
+    @Autowired
+    private JwtTool jwtTool;
 
     // 用户登录
     @PostMapping("/login")
@@ -35,10 +37,7 @@ public class UserController {
         User user = userService.login(loginFormDTO);
         Map<String, Object> claims = new HashMap<>();
         claims.put("empId", user.getId());
-        String token = JwtUtil.createJWT(
-                generateRandomKey(),
-                jwtProperties.getUserTtl(),
-                claims);
+        String token = jwtTool.createToken(user.getId(), jwtProperties.getTokenTTL());
         UserVO userVO = UserVO.builder()
                 .username(user.getUsername())
                 .isVIP(user.getIsVip())
