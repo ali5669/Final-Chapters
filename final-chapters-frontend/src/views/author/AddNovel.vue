@@ -89,9 +89,7 @@ export default {
         osummary: '',
         ocover_image: '',
         ocategory: '',
-        otags: '',
-        ocreated_at: null,
-        updated_at: null,
+        otags: ''
       },
     };
   },
@@ -104,10 +102,6 @@ export default {
             alert('请填写所有必填字段');
             return;
         }
-
-        const now = new Date().toISOString();
-        this.novel.ocreated_at = now;
-        this.novel.updated_at = now;
 
         // 构造完整的小说对象
         const newNovel = {
