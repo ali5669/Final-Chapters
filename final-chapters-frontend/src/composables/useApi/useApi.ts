@@ -52,6 +52,15 @@ export const ratingClient = axios.create({
   },
 })
 
+
+export const contentClient = axios.create({
+  baseURL: '/api',
+  timeout: 5000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})
+
 export const userClient = axios.create({
   baseURL: 'http://localhost:8083/api/user',
   timeout: 5000,
