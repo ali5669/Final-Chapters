@@ -52,7 +52,7 @@ jobs:
         port: ${{ secrets.PORT_USER_SERVICE }}
         key: ${{ secrets.KEY_USER_SERVICE }}
         source: "final-chapters-backend/${{ matrix.service }}/target/*.jar"
-        target: "/root/workspace/FinalChaptersServer/${{ matrix.service }}"
+        target: "/root/workspace/FinalChaptersServer/tmp"
         
     - name: Restart Java Process
       uses: appleboy/ssh-action@master
@@ -66,5 +66,10 @@ jobs:
           if [ -n "$PID" ]; then
             kill -9 $PID
           fi
-          cd /root/workspace/FinalChaptersServer/${{ matrix.service }}/final-chapters-backend/${{ matrix.service }}
-          nohup java -jar target/user-service-0.0.1-SNAPSHOT.jar > commentlog.txt &
+          
+          # Replace old jar with new jar
+          mv /root/workspace/FinalChaptersServer/tmp/*.jar /root/workspace/FinalChaptersServer/${{ matrix.service }}/user-service-0.0.1-SNAPSHOT.jar
+          
+          # Start new service
+          cd /root/workspace/FinalChaptersServer/${{ matrix.service }}
+          nohup java -jar user-service-0.0.1-SNAPSHOT.jar > commentlog.txt &
