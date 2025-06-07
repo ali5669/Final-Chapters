@@ -52,4 +52,19 @@ jobs:
         port: ${{ secrets.PORT_COMMENT_SERVICE }}
         key: ${{ secrets.KEY_COMMENT_SERVICE }}
         source: "final-chapters-backend/${{ matrix.service }}/target/*.jar"
-        target: "/workspace/FinalChaptersServer/${{ matrix.service }}"
+        target: "/root/workspace/FinalChaptersServer/${{ matrix.service }}"
+        
+    - name: Restart Java Process
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST_COMMENT_SERVICE }}
+        username: ${{ secrets.USERNAME_COMMENT_SERVICE }}
+        port: ${{ secrets.PORT_COMMENT_SERVICE }}
+        key: ${{ secrets.KEY_COMMENT_SERVICE }}
+        script: |
+          PID=$(ps -ef | grep "comment-service-0.0.1-SNAPSHOT.jar.jar" | grep -v "grep" | awk '{print $2}')
+          if [ -n "$PID" ]; then
+            kill -9 $PID
+          fi
+          cd /root/workspace/FinalChaptersServer/${{ matrix.service }}
+          java -jar target/comment-service-0.0.1-SNAPSHOT.jar.jar &
