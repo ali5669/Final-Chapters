@@ -92,7 +92,6 @@
           >
             <div>
               <h3 class="font-medium">第 {{ chapter.order }} 章：{{ chapter.title }}</h3>
-              <p class="text-sm text-gray-500">更新于 {{ formatDate(chapter.updateAt) }}</p>
             </div>
             <router-link
               :to="`/read/${novel.id}/${chapter.chapterId}`"
@@ -127,8 +126,9 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { $novel, $chapter, $history } from '../../composables/useApi/useContent'
-import type { Novel, Chapter } from '../../composables/useApi/useContent'
+import type { Novel, Chapter, BrowsingHistory } from '../../composables/useApi/useContent'
 import { useAsyncData } from '../../composables/useApi/useApi'
+import { useUserStore } from '@/stores/user'
 
 const route = useRoute()
 const router = useRouter()
@@ -162,14 +162,14 @@ const loadChapters = async () => {
   chaptersLoading.value = true
   try {
     const [chaptersResult, countResult] = await Promise.all([
-      $chapter.getChaptersByPage(novelId, currentPage.value, pageSize),
+      $chapter.getChaptersByPage(novelId),
       $chapter.getChapterCount(novelId),
     ])
 
+    console.log('数据' + chaptersResult.data)
     if (chaptersResult.success && countResult.success) {
-      console.log(countResult)
       chapters.value = chaptersResult.data
-      chapterCount.value = countResult.data.chapterCount
+      chapterCount.value = countResult.data
     }
   } catch (err) {
     console.error('Failed to load chapters:', err)
@@ -187,7 +187,6 @@ watch(currentPage, () => {
 const isBookmarked = ref(false)
 const checkIfBookmarked = async () => {
   try {
-    // const userId = userStore.currentUser
     const result = await $history.getUserHistory()
 
     if (result.success) {

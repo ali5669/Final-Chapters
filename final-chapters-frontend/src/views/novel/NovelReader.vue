@@ -3,13 +3,13 @@
   <div class="min-h-screen bg-gray-50" :class="{ dark: isDarkMode }">
     <!-- Loading State -->
     <div v-if="loading" class="flex justify-center py-20">
-      <div class="animate-spin rounded-full h-12 w-12 border-4 border-indigo-500 border-t-transparent"></div>
+      <div
+        class="animate-spin rounded-full h-12 w-12 border-4 border-indigo-500 border-t-transparent"
+      ></div>
     </div>
 
     <!-- Error State -->
-    <div v-else-if="error" class="text-center py-20 text-red-500">
-      加载失败，请稍后重试
-    </div>
+    <div v-else-if="error" class="text-center py-20 text-red-500">加载失败，请稍后重试</div>
 
     <template v-else>
       <!-- Reader Header -->
@@ -17,7 +17,10 @@
         <div class="container mx-auto px-4 py-2">
           <div class="flex items-center justify-between">
             <div class="flex items-center space-x-4">
-              <router-link :to="`/novel/${novelId}`" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600">
+              <router-link
+                :to="`/novel/${novelId}`"
+                class="text-gray-600 dark:text-gray-300 hover:text-indigo-600"
+              >
                 <i class="fas fa-arrow-left"></i>
               </router-link>
               <h1 class="text-lg font-medium text-gray-900 dark:text-white">{{ novel?.title }}</h1>
@@ -163,9 +166,12 @@ const showSettings = ref(false)
 
 // 小说和章节数据
 const { data: novelData, loading: novelLoading } = useAsyncData(() => $novel.getOne(novelId))
-const { data: chapterData, loading: chapterLoading, error, refresh: refreshChapter } = useAsyncData(
-  () => $chapter.getOne(chapterId.value)
-)
+const {
+  data: chapterData,
+  loading: chapterLoading,
+  error,
+  refresh: refreshChapter,
+} = useAsyncData(() => $chapter.getOne(chapterId.value))
 
 const novel = ref<Novel | null>(null)
 const chapter = ref<Chapter | null>(null)
@@ -181,23 +187,31 @@ watch(
       chapterId.value = newChapterId as string
       await refreshChapter()
     }
-  }
+  },
 )
 
 // 监听数据变化
-watch(novelData, (newData) => {
-  if (newData?.success) {
-    novel.value = newData.data
-  }
-}, { immediate: true })
+watch(
+  novelData,
+  (newData) => {
+    if (newData?.success) {
+      novel.value = newData.data
+    }
+  },
+  { immediate: true },
+)
 
-watch(chapterData, (newData) => {
-  if (newData?.success) {
-    chapter.value = newData.data
-    // 滚动到页面顶部
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-}, { immediate: true })
+watch(
+  chapterData,
+  (newData) => {
+    if (newData?.success) {
+      chapter.value = newData.data
+      // 滚动到页面顶部
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  },
+  { immediate: true },
+)
 
 // 导航状态
 const hasPreviousChapter = computed(() => chapter.value && chapter.value.order > 1)
@@ -213,19 +227,18 @@ const navigateChapter = async (direction: 'prev' | 'next') => {
 
   const targetOrder = direction === 'next' ? chapter.value.order + 1 : chapter.value.order - 1
   const result = await $chapter.getChapterByOrder(novelId, targetOrder)
-  
+
   if (result.success && result.data) {
     router.push(`/read/${novelId}/${result.data.chapterId}`)
   }
 }
-
 
 // 初始化
 onMounted(async () => {
   // 获取章节总数
   const countResult = await $chapter.getChapterCount(novelId)
   if (countResult.success) {
-    chapterCount.value = countResult.data
+    chapterCount.value = countResult.data.chapterCount
   }
 
   // 保存阅读进度
