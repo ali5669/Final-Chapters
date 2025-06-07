@@ -54,20 +54,20 @@ jobs:
         name: ${{ matrix.service }}-jar
         path: final-chapters-backend/${{ matrix.service }}/target/*.jar
 
-    - name: Set Secrets
+    - name: Set dynamic secrets
+      id: set-secrets
       run: |
-        SERVICE_NAME=$(echo "${{ matrix.service }}" | tr '[:lower:]-' '[:upper:]_')
-        echo "HOST=${{ secrets['HOST_' }}$SERVICE_NAME" >> $GITHUB_ENV
-        echo "USERNAME=${{ secrets['USERNAME_' }}$SERVICE_NAME" >> $GITHUB_ENV
-        echo "PORT=${{ secrets['PORT_' }}$SERVICE_NAME" >> $GITHUB_ENV
-        echo "KEY=${{ secrets['KEY_' }}$SERVICE_NAME" >> $GITHUB_ENV
-
+        echo "HOST=${{ secrets['HOST_' ~ matrix.service | upper | replace('-', '_')] }}" >> $GITHUB_ENV
+        echo "USERNAME=${{ secrets['USERNAME_' ~ matrix.service | upper | replace('-', '_')] }}" >> $GITHUB_ENV
+        echo "PORT=${{ secrets['PORT_' ~ matrix.service | upper | replace('-', '_')] }}" >> $GITHUB_ENV
+        echo "KEY=${{ secrets['KEY_' ~ matrix.service | upper | replace('-', '_')] }}" >> $GITHUB_ENV
+    
     - name: Deploy to server
       uses: appleboy/scp-action@master
       with:
-        host: ${{ env['HOST_' + matrix.service.toUpperCase().replace('-', '_')] }}
-        username: ${{ env['USERNAME_' + matrix.service.toUpperCase().replace('-', '_')] }}
-        port: ${{ env['PORT_' + matrix.service.toUpperCase().replace('-', '_')] }}
-        key: ${{ env['KEY_' + matrix.service.toUpperCase().replace('-', '_')] }}
+        host: ${{ env.HOST }}
+        username: ${{ env.USERNAME }}
+        port: ${{ env.PORT }}
+        key: ${{ env.KEY }}
         source: "final-chapters-backend/${{ matrix.service }}/target/*.jar"
         target: "/path/to/deploy/${{ matrix.service }}"
