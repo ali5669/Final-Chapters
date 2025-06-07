@@ -5,7 +5,7 @@ spring:
   application:
     name: comment-service
   datasource:
-    url: jdbc:mysql://101.201.52.101:3306/comment?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://47.93.172.221:3306/comment?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
     username: root
     password: final-chapters123456
     driver-class-name: com.mysql.cj.jdbc.Driver
