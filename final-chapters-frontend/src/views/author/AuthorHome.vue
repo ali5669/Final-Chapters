@@ -2,7 +2,7 @@
   <div class="max-w-4xl mx-auto space-y-8 py-12">
     <!-- 作者信息 -->
     <section class="bg-white rounded-lg shadow-md p-6 flex items-center">
-      <img :src="author.avatar" alt="Avatar" class="w-20 h-20 rounded-full object-cover mr-6" />
+      <img :src="author.profilePicture" alt="Avatar" class="w-20 h-20 rounded-full object-cover mr-6" />
       <h2 class="text-2xl font-bold">{{ author.username }}</h2>
     </section>
 
@@ -37,30 +37,57 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      // 作者信息示例数据
-      author: {
-        avatar: 'http://gips3.baidu.com/it/u=3886271102,3123389489&fm=3028&app=3028&f=JPEG&fmt=auto?w=1280&h=960', // 示例头像
-        username: '作家名', // 示例用户名
-      },
-      // 作家的作品列表
-      authorWorks: [
-        { id: 1, title: '作品一' },
-        { id: 2, title: '作品二' },
-        { id: 3, title: '作品三' },
-      ],
-    };
-  },
-  methods: {
-    addWork() {
-      this.$router.push(`/author/addWork`);
-    },
-    manageChapters(work) {
-      this.$router.push(`/author/manageChapters/${work.id}`);
-    },
-  },
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
+import { $novel } from '@/composables/useApi/useApiNovel'
+
+const router = useRouter()
+const userStore = useUserStore()
+
+
+
+// Reactive state
+const author = ref({
+  profilePicture: 'http://gips3.baidu.com/it/u=3886271102,3123389489&fm=3028&app=3028&f=JPEG&fmt=auto?w=1280&h=960',
+  // username: userStore.currentUser.username,
+  username: 'userStore.currentUser.username',
+})
+
+const authorWorks = ref([
+  { id: '13', title: '王者荣耀攻略' },
+  { id: '2', title: '作品二' },
+  { id: '3', title: '作品三' },
+])
+
+// Methods
+const addWork = () => {
+  router.push('/author/addWork')
+}
+
+const manageChapters = (work) => {
+  router.push(`/author/manageChapters/${work.id}`)
+}
+// 查询作者的小说
+const fetchNovelData = async () => {
+  // const { data: novels } = await $novel.getNovelById({data:{novelId:novelId}});
+
 };
+onMounted(async() => {
+  try{
+    // Mock successful login
+    const mockUser = {
+      userId: 12345,
+      username: 'mockuser',
+      isVIP: false,
+    }
+    userStore.setUser(mockUser)
+    author.value.username = userStore.currentUser.username
+    await Promise.all([fetchNovelData()]);
+  }catch(err){
+    console.error(err)
+  }
+  
+});
 </script>

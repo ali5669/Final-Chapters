@@ -20,6 +20,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { $chapter } from '@/composables/useApi/useApiChapter'
 import axios from 'axios';
 
 const route = useRoute();
@@ -41,19 +42,28 @@ const novel = ref({});
 const submitChapter = async () => {
 // 检查章节标题和内容是否为空
     if (!chapter.value.title.trim() || !chapter.value.content.trim()) {
-        alert('章节标题和内容不能为空！');
-        return;
+      alert('章节标题和内容不能为空！');
+      return;
     }
     try {
-        const response = await axios.post('/api/chapters', {
-            ...chapter.value,
-            novelId
-        });
-
-        // 跳转回管理页面
-        router.push({ name: 'manageChapters', params: { novelId } });
+      // 获取章节顺序
+      const { data: newOrder } = await $chapter.getNewOrder({data:{novelId:novelId}});
+      console.log('章节顺序:', newOrder);
+      // 构造完整的小说对象
+      const newChapeter = {
+        "novelId": novelId,
+        "title": chapter.value.title,
+        "content": chapter.value.content,
+        "order": newOrder
+      };
+      // 输出结果，或替换为 API 调用
+      console.log('提交的章节数据:', newChapeter);
+      const { data: res } = await $chapter.addChapter({data: newChapeter})
+      console.log('章节id:', res);
+      // 跳转回章节管理页面
+      router.push({ name: 'manageChapters', params: { novelId } });
     } catch (error) {
-        console.error('提交章节失败:', error);
+      console.error('提交章节失败:', error);
     }
 };
 
@@ -75,7 +85,7 @@ const fetchNovelInfo = async () => {
 // 页面加载时获取小说信息
 import { onMounted } from 'vue';
 onMounted(async () => {
-  await fetchNovelInfo();
+  // await fetchNovelInfo();
 });
 </script><style scoped>
 .add-chapter {
