@@ -67,7 +67,7 @@ jobs:
           
           # Replace old jar with new jar
           mkdir -p /root/workspace/FinalChaptersServer/${{ matrix.service }}
-          mv /root/workspace/FinalChaptersServer/tmp/*.jar /root/workspace/FinalChaptersServer/${{ matrix.service }}/novel-service-0.0.1-SNAPSHOT.jar
+          mv /root/workspace/FinalChaptersServer/tmp/final-chapters-backend/${{ matrix.service }}/target/novel-service-0.0.1-SNAPSHOT.jar /root/workspace/FinalChaptersServer/${{ matrix.service }}/novel-service-0.0.1-SNAPSHOT.jar
           
           # Start new service
           cd /root/workspace/FinalChaptersServer/${{ matrix.service }}
