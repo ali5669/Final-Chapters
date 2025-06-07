@@ -1,0 +1,70 @@
+name: Build and Deploy User Service
+
+on:
+  push:
+    branches:
+      - main  # 或你希望触发的分支名
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: ['user-service']
+  
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Cache Maven packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+
+    - name: Build Service - ${{ matrix.service }}
+      run: |
+        cd final-chapters-backend/${{ matrix.service }}
+        mvn clean package
+
+    - name: Upload Artifact (Optional)
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.service }}-jar
+        path: final-chapters-backend/${{ matrix.service }}/target/*.jar
+
+    - name: Deploy to server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST_USER_SERVICE }}
+        username: ${{ secrets.USERNAME_USER_SERVICE }}
+        port: ${{ secrets.PORT_USER_SERVICE }}
+        key: ${{ secrets.KEY_USER_SERVICE }}
+        source: "final-chapters-backend/${{ matrix.service }}/target/*.jar"
+        target: "/root/workspace/FinalChaptersServer/${{ matrix.service }}"
+        
+    - name: Restart Java Process
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST_USER_SERVICE }}
+        username: ${{ secrets.USERNAME_USER_SERVICE }}
+        port: ${{ secrets.PORT_USER_SERVICE }}
+        key: ${{ secrets.KEY_USER_SERVICE }}
+        script: |
+          PID=$(ps -ef | grep "user-service-0.0.1-SNAPSHOT.jar" | grep -v "grep" | awk '{print $2}')
+          if [ -n "$PID" ]; then
+            kill -9 $PID
+          fi
+          cd /root/workspace/FinalChaptersServer/${{ matrix.service }}/final-chapters-backend/${{ matrix.service }}
+          nohup java -jar target/user-service-0.0.1-SNAPSHOT.jar > commentlog.txt &
