@@ -1,14 +1,16 @@
 server:
-  port: 8082
-fc:
-  jwt:
-    location: classpath:fc.jks
-    alias: finalchapters
-    password: final-chapters123456
-    tokenTTL: 30m
+  port: 8089
+
 spring:
   application:
     name: novel-service
-  cloud:
-    nacos:
-      server-addr: 101.201.52.101:8848
+  datasource:
+    url: jdbc:mysql://101.201.52.101:3306/novel?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: final-chapters123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+mybatis-plus:
+  type-aliases-package: com.ali5669.commentservice.domain.po # 别名扫描包
+logging:
+  level:
+    com.ali5669.commentservice: debug
