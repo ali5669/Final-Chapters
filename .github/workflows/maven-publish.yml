@@ -13,7 +13,30 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        service: ['user-service', 'content-service', 'comment-service', 'novel-service', 'gateway-service']
+        include:
+          - service: user-service
+            host: ${{ secrets.HOST_USER_SERVICE }}
+            username: ${{ secrets.USERNAME_USER_SERVICE }}
+            port: ${{ secrets.PORT_USER_SERVICE }}
+            key: ${{ secrets.KEY_USER_SERVICE }}
+
+          - service: novel-service
+            host: ${{ secrets.HOST_NOVEL_SERVICE }}
+            username: ${{ secrets.USERNAME_NOVEL_SERVICE }}
+            port: ${{ secrets.PORT_NOVEL_SERVICE }}
+            key: ${{ secrets.KEY_NOVEL_SERVICE }}
+          
+          - service: content-service
+            host: ${{ secrets.HOST_CONTENT_SERVICE }}
+            username: ${{ secrets.USERNAME_CONTENT_SERVICE }}
+            port: ${{ secrets.PORT_CONTENT_SERVICE }}
+            key: ${{ secrets.KEY_CONTENT_SERVICE }}
+            
+          - service: comment-service
+            host: ${{ secrets.HOST_COMMENT_SERVICE }}
+            username: ${{ secrets.USERNAME_COMMENT_SERVICE }}
+            port: ${{ secrets.PORT_COMMENT_SERVICE }}
+            key: ${{ secrets.KEY_COMMENT_SERVICE }}
   
     steps:
     - name: Checkout Code
@@ -47,9 +70,9 @@ jobs:
     - name: Deploy to server
       uses: appleboy/scp-action@master
       with:
-        host: ${{ secrets[format('HOST_{0}', matrix.service)] }}
-        username: ${{ secrets[format('USERNAME_{0}', matrix.service)] }}
-        port: ${{ secrets[format('PORT_{0}', matrix.service)] }}
-        key: ${{ secrets[format('KEY_{0}', matrix.service)] }}
+        host: ${{ matrix.host }}
+        username: ${{ matrix.username }}
+        port: ${{ matrix.port }}
+        key: ${{ matrix.key }}
         source: "final-chapters-backend/${{ matrix.service }}/target/*.jar"
         target: "/path/to/deploy/${{ matrix.service }}"
