@@ -44,20 +44,12 @@ jobs:
         name: ${{ matrix.service }}-jar
         path: final-chapters-backend/${{ matrix.service }}/target/*.jar
 
-    - name: Set dynamic secrets
-      id: set-secrets
-      run: |
-        echo "HOST=${{ secrets['HOST_' ~ matrix.service | upper | replace('-', '_')] }}" >> $GITHUB_ENV
-        echo "USERNAME=${{ secrets['USERNAME_' ~ matrix.service | upper | replace('-', '_')] }}" >> $GITHUB_ENV
-        echo "PORT=${{ secrets['PORT_' ~ matrix.service | upper | replace('-', '_')] }}" >> $GITHUB_ENV
-        echo "KEY=${{ secrets['KEY_' ~ matrix.service | upper | replace('-', '_')] }}" >> $GITHUB_ENV
-    
     - name: Deploy to server
       uses: appleboy/scp-action@master
       with:
-        host: ${{ env.HOST }}
-        username: ${{ env.USERNAME }}
-        port: ${{ env.PORT }}
-        key: ${{ env.KEY }}
+        host: ${{ secrets['HOST_' + matrix.service] }}
+        username: ${{ secrets['USERNAME_' + matrix.service] }}
+        port: ${{ secrets['PORT_' + matrix.service] }}
+        key: ${{ secrets['KEY_' + matrix.service] }}
         source: "final-chapters-backend/${{ matrix.service }}/target/*.jar"
         target: "/path/to/deploy/${{ matrix.service }}"
