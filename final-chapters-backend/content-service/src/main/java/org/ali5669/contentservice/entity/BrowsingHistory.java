@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name = "browsinghistory", catalog = "content")
+@Table(name = "browsinghistory")
 public class BrowsingHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
