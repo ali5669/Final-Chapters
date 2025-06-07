@@ -52,4 +52,4 @@ jobs:
         port: ${{ secrets.PORT_COMMENT_SERVICE }}
         key: ${{ secrets.KEY_COMMENT_SERVICE }}
         source: "final-chapters-backend/${{ matrix.service }}/target/*.jar"
-        target: "/path/to/deploy/${{ matrix.service }}"
+        target: "/workspace/FinalChaptersServer/${{ matrix.service }}"
