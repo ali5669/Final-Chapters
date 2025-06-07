@@ -66,5 +66,5 @@ jobs:
           if [ -n "$PID" ]; then
             kill -9 $PID
           fi
-          cd /root/workspace/FinalChaptersServer/${{ matrix.service }}
-          java -jar target/comment-service-0.0.1-SNAPSHOT.jar.jar &
+          cd /root/workspace/FinalChaptersServer/${{ matrix.service }}/final-chapters-backend/${{ matrix.service }}/target
+          nohup java -jar comment-service-0.0.1-SNAPSHOT.jar > commentlog.txt &
