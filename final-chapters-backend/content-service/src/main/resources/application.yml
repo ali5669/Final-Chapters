@@ -19,6 +19,8 @@ spring:
   cloud:
     nacos:
       server-addr: 101.201.52.101:8848
+      discovery:
+        ip: 123.56.203.89
 
 logging:
   level:

@@ -12,6 +12,8 @@ spring:
   cloud:
     nacos:
       server-addr: 101.201.52.101:8848
+      discovery:
+        ip: 47.93.172.221
 mybatis-plus:
   type-aliases-package: com.ali5669.commentservice.domain.po # 别名扫描包
 logging:
