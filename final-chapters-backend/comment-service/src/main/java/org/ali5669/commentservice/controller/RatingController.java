@@ -5,6 +5,7 @@ import org.ali5669.commentservice.domain.dto.RatingCreateDTO;
 import org.ali5669.commentservice.domain.dto.Result;
 import org.ali5669.commentservice.domain.po.Rating;
 import org.ali5669.commentservice.service.IRatingService;
+import org.ali5669.commentservice.utils.UserContext;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,7 +16,7 @@ public class RatingController {
 
     @PostMapping
     public Result addRating(@RequestBody RatingCreateDTO createDTO){
-        Integer userIdInt = Integer.parseInt(createDTO.getUserId());
+        Integer userIdInt = UserContext.getUserId().intValue();
         Integer novelIdInt = Integer.parseInt(createDTO.getNovelId());
         Integer ratingInt = Integer.parseInt(createDTO.getRating());
 
