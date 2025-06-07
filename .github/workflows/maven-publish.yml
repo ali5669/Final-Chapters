@@ -46,10 +46,11 @@ jobs:
 
     - name: Set Secrets
       run: |
-        echo "HOST_${{ matrix.service.toUpperCase().replace('-', '_') }}=${{ secrets['HOST_' + matrix.service.toUpperCase().replace('-', '_')] }}" >> $GITHUB_ENV
-        echo "USERNAME_${{ matrix.service.toUpperCase().replace('-', '_') }}=${{ secrets['USERNAME_' + matrix.service.toUpperCase().replace('-', '_')] }}" >> $GITHUB_ENV
-        echo "PORT_${{ matrix.service.toUpperCase().replace('-', '_') }}=${{ secrets['PORT_' + matrix.service.toUpperCase().replace('-', '_')] }}" >> $GITHUB_ENV
-        echo "KEY_${{ matrix.service.toUpperCase().replace('-', '_') }}=${{ secrets['KEY_' + matrix.service.toUpperCase().replace('-', '_')] }}" >> $GITHUB_ENV
+        SERVICE_NAME=$(echo "${{ matrix.service }}" | tr '[:lower:]-' '[:upper:]_')
+        echo "HOST=${{ secrets['HOST_' }}$SERVICE_NAME" >> $GITHUB_ENV
+        echo "USERNAME=${{ secrets['USERNAME_' }}$SERVICE_NAME" >> $GITHUB_ENV
+        echo "PORT=${{ secrets['PORT_' }}$SERVICE_NAME" >> $GITHUB_ENV
+        echo "KEY=${{ secrets['KEY_' }}$SERVICE_NAME" >> $GITHUB_ENV
 
     - name: Deploy to server
       uses: appleboy/scp-action@master
