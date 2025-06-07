@@ -62,7 +62,7 @@ jobs:
         port: ${{ secrets.PORT_COMMENT_SERVICE }}
         key: ${{ secrets.KEY_COMMENT_SERVICE }}
         script: |
-          PID=$(ps -ef | grep "comment-service-0.0.1-SNAPSHOT.jar.jar" | grep -v "grep" | awk '{print $2}')
+          PID=$(ps -ef | grep "comment-service-0.0.1-SNAPSHOT.jar" | grep -v "grep" | awk '{print $2}')
           if [ -n "$PID" ]; then
             kill -9 $PID
           fi
