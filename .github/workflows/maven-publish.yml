@@ -6,7 +6,7 @@ on:
       - main  # 或你希望触发的分支名
   pull_request:
     branches:
-    - main
+      - main
 
 jobs:
   build-deploy:
