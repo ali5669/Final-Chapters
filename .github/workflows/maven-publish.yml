@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         service: ['user-service', 'content-service', 'comment-service', 'novel-service', 'gateway-service']
-
+  
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -43,3 +43,20 @@ jobs:
         with:
           name: ${{ matrix.service }}-jar
           path: final-chapters-backend/${{ matrix.service }}/target/*.jar
+
+      - name: Deploy to server
+        uses: appleboy/scp-action@v0.1.5  # 指定具体版本
+        with:
+          host: ${{ secrets['HOST_' + formatEnvName(matrix.service)] }}
+          username: ${{ secrets['USERNAME_' + formatEnvName(matrix.service)] }}
+          port: ${{ secrets['PORT_' + formatEnvName(matrix.service)] }}
+          key: ${{ secrets['KEY_' + formatEnvName(matrix.service)] }}
+          source: "final-chapters-backend/${{ matrix.service }}/target/*.jar"
+          target: "/path/to/deploy/${{ matrix.service }}"
+
+# 添加格式化服务名为环境变量的函数
+jobs.build-deploy.strategy.fail-fast: false
+jobs.build-deploy.steps:
+  - name: Setup bash functions
+    run: |
+      echo 'function formatEnvName() { echo "${1^^}" | tr "-" "_"; }' >> $BASH_ENV
