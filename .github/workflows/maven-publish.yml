@@ -13,7 +13,17 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-       service: ['user-service', 'content-service', 'comment-service', 'novel-service', 'gateway-service']
+        include:
+          - service: user-service
+            HOST: ${{ secrets.HOST_USER_SERVICE }}
+            USERNAME: ${{ secrets.USERNAME_USER_SERVICE }}
+            PORT: ${{ secrets.PORT_USER_SERVICE }}
+            KEY: ${{ secrets.KEY_USER_SERVICE }}
+          - service: content-service
+            HOST: ${{ secrets.HOST_CONTENT_SERVICE }}
+            USERNAME: ${{ secrets.USERNAME_CONTENT_SERVICE }}
+            PORT: ${{ secrets.PORT_CONTENT_SERVICE }}
+            KEY: ${{ secrets.KEY_CONTENT_SERVICE }}
   
     steps:
     - name: Checkout Code
