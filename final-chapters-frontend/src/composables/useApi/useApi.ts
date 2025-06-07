@@ -107,6 +107,7 @@ userClient.interceptors.request.use((config) => {
   }
   return config
 })
+
 export const novelClient = axios.create({
   baseURL: '/api/novel',
   timeout: 5000,
@@ -115,10 +116,26 @@ export const novelClient = axios.create({
   },
 })
 
+novelClient.interceptors.request.use((config) => {
+  const token = userStore.token
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
+})
+
 export const chapterClient = axios.create({
   baseURL: '/api/chapter',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
   },
+})
+
+chapterClient.interceptors.request.use((config) => {
+  const token = userStore.token
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
 })
