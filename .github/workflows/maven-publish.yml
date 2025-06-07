@@ -47,9 +47,9 @@ jobs:
     - name: Deploy to server
       uses: appleboy/scp-action@master
       with:
-        host: ${{ secrets[format('HOST_{}', matrix.service) | toUpper | replace('-', '_')] }}
-        username: ${{ secrets[format('USERNAME_{}', matrix.service) | toUpper | replace('-', '_')] }}
-        port: ${{ secrets[format('PORT_{}', matrix.service) | toUpper | replace('-', '_')] }}
-        key: ${{ secrets[format('KEY_{}', matrix.service) | toUpper | replace('-', '_')] }}
+        host: ${{ secrets[format('HOST_{0}', matrix.service)] }}
+        username: ${{ secrets[format('USERNAME_{0}', matrix.service)] }}
+        port: ${{ secrets[format('PORT_{0}', matrix.service)] }}
+        key: ${{ secrets[format('KEY_{0}', matrix.service)] }}
         source: "final-chapters-backend/${{ matrix.service }}/target/*.jar"
         target: "/path/to/deploy/${{ matrix.service }}"
