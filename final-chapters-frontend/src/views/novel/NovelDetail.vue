@@ -126,8 +126,9 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { $novel, $chapter, $history } from '../../composables/useApi/useContent'
-import type { Novel, Chapter } from '../../composables/useApi/useContent'
+import type { Novel, Chapter, BrowsingHistory } from '../../composables/useApi/useContent'
 import { useAsyncData } from '../../composables/useApi/useApi'
+import { useUserStore } from '@/stores/user'
 
 const route = useRoute()
 const router = useRouter()
@@ -165,9 +166,10 @@ const loadChapters = async () => {
       $chapter.getChapterCount(novelId),
     ])
 
+    console.log('数据' + chaptersResult.data)
     if (chaptersResult.success && countResult.success) {
       chapters.value = chaptersResult.data
-      chapterCount.value = countResult.data.chapterCount
+      chapterCount.value = countResult.data
     }
   } catch (err) {
     console.error('Failed to load chapters:', err)
@@ -185,7 +187,6 @@ watch(currentPage, () => {
 const isBookmarked = ref(false)
 const checkIfBookmarked = async () => {
   try {
-    // const userId = userStore.currentUser
     const result = await $history.getUserHistory()
 
     if (result.success) {
