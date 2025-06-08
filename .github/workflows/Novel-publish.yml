@@ -75,4 +75,4 @@ jobs:
           # Start new service
           cd /root/workspace/FinalChaptersServer/${{ matrix.service }}
           nohup java -jar novel-service-0.0.1-SNAPSHOT.jar > novellog.txt &
-          exit 0
+          disown
