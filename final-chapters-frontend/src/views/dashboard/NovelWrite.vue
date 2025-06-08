@@ -1,17 +1,19 @@
 <template>
   <div class="space-y-8">
     <div class="flex justify-between items-center">
-      <h1 class="text-2xl font-bold">Write Your Story</h1>
+      <h1 class="text-2xl font-bold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+        Write Your Story
+      </h1>
       <div class="flex space-x-4">
         <button
           @click="saveChapter"
-          class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+          class="px-6 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg font-semibold hover:from-indigo-600 hover:to-purple-700 transition-all duration-300 shadow-md"
         >
           Save Chapter
         </button>
         <button
           @click="publishChapter"
-          class="px-4 py-2 border border-indigo-600 text-indigo-600 rounded-md hover:bg-indigo-50"
+          class="px-6 py-2 border-2 border-indigo-500 text-indigo-600 dark:text-indigo-400 rounded-lg font-semibold hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-all duration-300"
         >
           Publish
         </button>
@@ -20,64 +22,69 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
       <!-- Novel List -->
-      <div class="lg:col-span-1 bg-white rounded-lg shadow-sm p-4">
+      <div class="lg:col-span-1 bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-lg p-6 backdrop-blur-lg">
         <div class="flex justify-between items-center mb-4">
-          <h2 class="text-lg font-semibold">My Novels</h2>
-          <button @click="showNewNovelDialog = true" class="text-indigo-600 hover:text-indigo-700">
-            <i class="fas fa-plus"></i>
+          <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200">My Novels</h2>
+          <button
+            @click="showNewNovelDialog = true"
+            class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors duration-300"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
           </button>
         </div>
-        <div class="space-y-2">
+        <div class="space-y-3">
           <div
             v-for="novel in novels"
             :key="novel.id"
-            class="p-2 hover:bg-gray-50 rounded cursor-pointer"
-            :class="{ 'bg-gray-50': selectedNovel?.id === novel.id }"
+            class="p-4 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-xl cursor-pointer transition-colors duration-300"
+            :class="{ 'bg-indigo-50 dark:bg-indigo-900/30': selectedNovel?.id === novel.id }"
             @click="selectNovel(novel)"
           >
-            <h3 class="font-medium">{{ novel.title }}</h3>
-            <p class="text-sm text-gray-500">{{ novel.chapters.length }} chapters</p>
+            <h3 class="font-medium text-gray-800 dark:text-gray-200">{{ novel.title }}</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400">{{ novel.chapters.length }} chapters</p>
           </div>
         </div>
       </div>
 
       <!-- Editor Section -->
-      <div class="lg:col-span-3 space-y-4">
-        <div class="bg-white rounded-lg shadow-sm p-6">
+      <div class="lg:col-span-3 space-y-6">
+        <div class="bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-lg p-6 backdrop-blur-lg">
           <input
             v-model="chapterTitle"
             type="text"
             placeholder="Chapter Title"
-            class="w-full text-xl font-semibold mb-4 border-0 focus:ring-0"
+            class="w-full text-xl font-semibold mb-4 bg-transparent border-0 focus:ring-0 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500"
           />
-          <div class="prose max-w-none">
+          <div class="prose dark:prose-invert max-w-none">
             <textarea
               v-model="chapterContent"
               rows="20"
               placeholder="Write your story here..."
-              class="w-full border-0 focus:ring-0 resize-none"
+              class="w-full bg-transparent border-0 focus:ring-0 resize-none text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500"
             ></textarea>
           </div>
         </div>
 
         <!-- Chapter Settings -->
-        <div class="bg-white rounded-lg shadow-sm p-6">
-          <h3 class="text-lg font-semibold mb-4">Chapter Settings</h3>
+        <div class="bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-lg p-6 backdrop-blur-lg">
+          <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Chapter Settings</h3>
           <div class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700">Chapter Number</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Chapter Number</label>
               <input
                 v-model="chapterNumber"
                 type="number"
                 min="1"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white/50 dark:bg-gray-800/50 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:text-gray-200"
               />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Status</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
               <select
                 v-model="chapterStatus"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white/50 dark:bg-gray-800/50 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:text-gray-200"
               >
                 <option value="draft">Draft</option>
                 <option value="published">Published</option>
@@ -91,33 +98,33 @@
     <!-- New Novel Dialog -->
     <div
       v-if="showNewNovelDialog"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+      class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
     >
-      <div class="bg-white rounded-lg p-6 max-w-md w-full">
-        <h2 class="text-xl font-semibold mb-4">Create New Novel</h2>
-        <form @submit.prevent="createNovel" class="space-y-4">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md w-full shadow-2xl">
+        <h2 class="text-xl font-semibold mb-6 text-gray-800 dark:text-gray-200">Create New Novel</h2>
+        <form @submit.prevent="createNovel" class="space-y-6">
           <div>
-            <label class="block text-sm font-medium text-gray-700">Title</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Title</label>
             <input
               v-model="newNovelTitle"
               type="text"
               required
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white/50 dark:bg-gray-800/50 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:text-gray-200"
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700">Description</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
             <textarea
               v-model="newNovelDescription"
               rows="3"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white/50 dark:bg-gray-800/50 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:text-gray-200"
             ></textarea>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700">Category</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
             <select
               v-model="newNovelCategory"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white/50 dark:bg-gray-800/50 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:text-gray-200"
             >
               <option value="fantasy">Fantasy</option>
               <option value="romance">Romance</option>
@@ -129,13 +136,13 @@
             <button
               type="button"
               @click="showNewNovelDialog = false"
-              class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+              class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-300"
             >
               Cancel
             </button>
             <button
               type="submit"
-              class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+              class="px-6 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg font-semibold hover:from-indigo-600 hover:to-purple-700 transition-all duration-300 shadow-md"
             >
               Create
             </button>
