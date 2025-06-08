@@ -12,6 +12,7 @@ import org.ali5669.userservice.domain.vo.UserLoginVO;
 import org.ali5669.userservice.domain.vo.UserVO;
 import org.ali5669.userservice.service.IUserService;
 import org.ali5669.userservice.utils.JwtTool;
+import org.ali5669.userservice.utils.UserContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -76,6 +77,11 @@ public class UserController {
     @GetMapping("/{id}")
     public Result getUserById(@PathVariable Long id){
         return userService.getUserById(id);
+    }
+
+    @GetMapping("")
+    public Result getUser(){
+        return userService.getUser(UserContext.getUserId());
     }
     private static String generateRandomKey() {
         byte[] key = new byte[32];
