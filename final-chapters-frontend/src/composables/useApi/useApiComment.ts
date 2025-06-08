@@ -36,7 +36,6 @@ export const $comment = {
    */
   addComment: async (params: {
     data: {
-      userId: string
       novelId: string
       chapterId: string
       content: string
@@ -60,22 +59,24 @@ export const $comment = {
   /**
    * @tags 评论
    * @name listByNovelId
-   * @request  GET:/api/comment/list/{novelId}
+   * @request  GET:/api/comment/novelList/{novelId}
    * @response `ApiResult<Comment[]>`
    */
   listByNovelId: async (novelId: string) => {
-    const { data } = await commentClient.get<ApiResult<Comment[]>>(`/list/${novelId}`)
+    const { data } = await commentClient.get<ApiResult<Comment[]>>(`/novelList/${novelId}`)
     return data
   },
 
   /**
    * @tags 评论
    * @name listByChapterId
-   * @request  GET:/api/comment/list/{novelId}/{chapterId}
+   * @request  GET:/api/comment/chapterList/{novelId}/{chapterId}
    * @response `ApiResult<Comment[]>`
    */
   listByChapterId: async (novelId: string, chapterId: string) => {
-    const { data } = await commentClient.get<ApiResult<Comment[]>>(`/list/${novelId}/${chapterId}`)
+    const { data } = await commentClient.get<ApiResult<Comment[]>>(
+      `/chapterList/${novelId}/${chapterId}`,
+    )
     return data
   },
 }

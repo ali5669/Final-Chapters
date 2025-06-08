@@ -1,20 +1,17 @@
 <script setup lang="ts">
 import { ApiResult } from '@/composables/useApi/useApi'
 import { $comment } from '@/composables/useApi/useApiComment'
-import { useUserStore } from '@/stores/user'
 import { ref } from 'vue'
 
-const props = defineProps<{ novelId: string; chapterId: string }>()
+const props = defineProps<{ novelId: string; chapterId?: string }>()
 
 const comment = ref('')
-const userStore = useUserStore()
 
 const onClickButton = () => {
   console.log(comment.value)
   $comment
     .addComment({
       data: {
-        userId: userStore.currentUser.id,
         novelId: props.novelId,
         chapterId: props.chapterId,
         content: comment.value,
