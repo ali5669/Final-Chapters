@@ -8,6 +8,7 @@ export interface Novel {
   summary: string
   category: string
   tags: string
+  coverImage: string
 }
 
 

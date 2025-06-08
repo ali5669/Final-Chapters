@@ -2,7 +2,7 @@
   <div class="chapter-management">
     <!-- Novel Info Section -->
     <div class="novel-info">
-      <img :src="novel.cover" alt="Cover" class="cover-image" />
+      <img :src="novel.coverImage" alt="Cover" class="cover-image" />
       <div class="info-details">
         <h2>{{ novel.title }}</h2>
         <p><strong>简介:</strong> {{ novel.summary }}</p>
