@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.ali5669.userservice.domain.dto.*;
 import org.ali5669.userservice.domain.po.User;
 import org.ali5669.userservice.domain.vo.ProfileVO;
+import org.ali5669.userservice.domain.vo.UserVO;
 import org.ali5669.userservice.exception.BaseException;
 import org.ali5669.userservice.mapper.UserMapper;
 import org.ali5669.userservice.service.IUserService;
@@ -102,10 +103,16 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public Result becomeVIP(BecomeVipDTO becomeVipDTO) {
-        User currentUser = userMapper.findByUsername(becomeVipDTO.getUsername());
-        currentUser.setIsVip(!becomeVipDTO.isVIP());
-        userMapper.updateById(currentUser);
-        return Result.ok(currentUser);
+        User user = userMapper.findByUsername(becomeVipDTO.getUsername());
+        user.setIsVip(!becomeVipDTO.isVIP());
+        userMapper.updateById(user);
+        UserVO userVO = UserVO.builder()
+                .userId(user.getUserId())
+                .username(user.getUsername())
+                .isVIP(user.getIsVip())
+                .profilePicture(user.getProfilePicture())
+                .build();
+        return Result.ok(userVO);
     }
 
     @Override
@@ -115,5 +122,17 @@ public class UserServiceImpl implements IUserService {
         profileVO.setProfilePicture(user.getProfilePicture());
         profileVO.setUsername(user.getUsername());
         return Result.ok(profileVO);
+    }
+
+    @Override
+    public Result getUser(Long userId){
+        User user=userMapper.selectById(userId);
+        UserVO userVO = UserVO.builder()
+                .userId(user.getUserId())
+                .username(user.getUsername())
+                .isVIP(user.getIsVip())
+                .profilePicture(user.getProfilePicture())
+                .build();
+        return Result.ok(userVO);
     }
 }

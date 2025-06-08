@@ -1,4 +1,3 @@
-import axios from 'axios'
 import type { ApiResult } from './useApi'
 import { userClient } from './useApi'
 
@@ -102,6 +101,30 @@ export const $user = {
    */
   becomeVIP: async (params: { data: BecomeVIPRequest }) => {
     const { data } = await userClient.post<ApiResult<User>>('/becomeVIP', params.data)
+    return data
+  },
+
+  /**
+   * @tags 用户
+   * @name getUser
+   * @request  POST:/api/user
+   * @response `ApiResult<User>`
+   */
+
+  getUser: async () => {
+    const { data } = await userClient.get<ApiResult<User>>('')
+    return data
+  },
+
+  /**
+   * @tags 用户
+   * @name getUserById
+   * @request  POST:/api/user
+   * @response `ApiResult<User>`
+   */
+
+  getUserById: async (id: string) => {
+    const { data } = await userClient.get<ApiResult<User>>(`/${id}`)
     return data
   },
 }

@@ -21,6 +21,7 @@ const onClickButton = () => {
       .then((res: ApiResult<null>) => {
         if (res.success) {
           alert('发表成功')
+          location.reload()
         } else {
           alert(res.errorMsg)
         }

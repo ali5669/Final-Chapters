@@ -14,7 +14,7 @@ export interface ApiResult<T> {
 // 用于处理异步请求的函数，类似 Nuxt 中的 useAsyncData
 // 无需放置在 OnMounted 生命周期中，声明即调用
 // 示例: const { data, error, loading } = useAsyncData(() => $comment.getOne('123'))
-export function useAsyncData(asyncFunction: () => any) {
+export function useAsyncData<T>(asyncFunction: () => Promise<T>, onCompleted?: (data: T) => void) {
   const data = ref(null)
   const error = ref(null)
   const loading = ref(true)
@@ -24,6 +24,10 @@ export function useAsyncData(asyncFunction: () => any) {
       loading.value = true
       const response = await asyncFunction()
       data.value = response
+
+      if (onCompleted) {
+        onCompleted(response)
+      }
     } catch (err) {
       error.value = err
     } finally {

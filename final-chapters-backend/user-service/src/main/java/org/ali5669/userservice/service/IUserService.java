@@ -10,4 +10,5 @@ public interface IUserService {
     Result editPassword(EditPasswordDTO editPasswordDTO);
     Result becomeVIP(BecomeVipDTO becomeVipDTO);
     Result getUserById(Long userId);
+    Result getUser(Long userId);
 }
