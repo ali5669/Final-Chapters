@@ -46,12 +46,12 @@ public class CommentController {
          return Result.ok(commentService.getOne(Integer.parseInt(id)));
     }
 
-    @GetMapping("/list/{novelId}")
+    @GetMapping("/novelList/{novelId}")
     public Result listByNovelId(@PathVariable String novelId){
         return Result.ok(commentService.listByNovelId(Integer.parseInt(novelId)));
     }
 
-    @GetMapping("/list/{novelId}/{chapterId}")
+    @GetMapping("/chapterList/{novelId}/{chapterId}")
     public Result listByChapterId(@PathVariable String novelId, @PathVariable String chapterId){
         return Result.ok(commentService.listByChapterId(Integer.parseInt(novelId), Integer.parseInt(chapterId)));
     }
