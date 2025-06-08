@@ -68,16 +68,11 @@ jobs:
           if [ -n "$PID" ]; then
             kill -9 $PID
           fi
-
-          ls -la /root/workspace/FinalChaptersServer/tmp/final-chapters-backend/${{ matrix.service }}/target
           
           # Replace old jar with new jar
           mv /root/workspace/FinalChaptersServer/tmp/final-chapters-backend/${{ matrix.service }}/target/*.jar /root/workspace/FinalChaptersServer/${{ matrix.service }}/novel-service-0.0.1-SNAPSHOT.jar
-
-          pwd
-          ls -la
           
           # Start new service
           cd /root/workspace/FinalChaptersServer/${{ matrix.service }}
-          java -jar novel-service-0.0.1-SNAPSHOT.jar > novellog.txt &
+          nohup java -jar novel-service-0.0.1-SNAPSHOT.jar > novellog.txt &
           exit 0
