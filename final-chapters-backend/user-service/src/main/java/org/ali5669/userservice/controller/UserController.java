@@ -72,6 +72,11 @@ public class UserController {
     public Result becomeVIP(@RequestBody BecomeVipDTO becomeVipDTO) {
         return userService.becomeVIP(becomeVipDTO);
     }
+
+    @GetMapping("/{id}")
+    public Result getUserById(@PathVariable Long id){
+        return userService.getUserById(id);
+    }
     private static String generateRandomKey() {
         byte[] key = new byte[32];
         new SecureRandom().nextBytes(key);

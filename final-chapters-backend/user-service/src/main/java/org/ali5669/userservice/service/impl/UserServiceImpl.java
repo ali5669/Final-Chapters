@@ -108,4 +108,12 @@ public class UserServiceImpl implements IUserService {
         return Result.ok(currentUser);
     }
 
+    @Override
+    public Result getUserById(Long userId){
+        ProfileVO profileVO=new ProfileVO();
+        User user=userMapper.selectById(userId);
+        profileVO.setProfilePicture(user.getProfilePicture());
+        profileVO.setUsername(user.getUsername());
+        return Result.ok(profileVO);
+    }
 }
