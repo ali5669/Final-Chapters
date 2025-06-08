@@ -61,7 +61,7 @@ jobs:
           username: ${{ secrets.USERNAME_COMMENT_SERVICE }}
           port: ${{ secrets.PORT_COMMENT_SERVICE }}
           key: ${{ secrets.KEY_COMMENT_SERVICE }}
-          command_timeout: 20s
+          command_timeout: 100s
           script: |
             PID=$(ps -ef | grep ".jar" | grep -v "grep" | awk '{print $2}')
             if [ -n "$PID" ]; then
