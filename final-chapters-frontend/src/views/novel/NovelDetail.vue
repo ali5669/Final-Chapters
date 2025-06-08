@@ -13,7 +13,12 @@
 
     <template v-else>
       <!-- Novel Header -->
-      <div class="bg-white rounded-lg shadow-sm p-6">
+      <div
+        :class="[
+          'rounded-lg shadow-sm p-6 transition-colors duration-300',
+          themeStore.isDarkMode ? 'bg-slate-800/90 text-gray-100' : 'bg-white text-gray-900',
+        ]"
+      >
         <div class="flex flex-col md:flex-row gap-8">
           <div class="w-full md:w-64">
             <img
@@ -23,39 +28,59 @@
             />
           </div>
           <div class="flex-1 space-y-4">
-            <h1 class="text-3xl font-bold text-gray-900">{{ novel.title }}</h1>
+            <h1 class="text-3xl font-bold">{{ novel.title }}</h1>
             <div class="flex space-x-2">
               <span
                 v-if="novel.category"
-                class="px-3 py-1 bg-indigo-100 rounded-full text-sm text-indigo-700"
+                :class="[
+                  'px-3 py-1 rounded-full text-sm',
+                  themeStore.isDarkMode
+                    ? 'bg-indigo-900/50 text-indigo-300'
+                    : 'bg-indigo-100 text-indigo-700',
+                ]"
               >
                 {{ novel.category }}
               </span>
               <span
                 v-for="tag in getTags(novel.tags)"
                 :key="tag"
-                class="px-3 py-1 bg-gray-100 rounded-full text-sm text-gray-600"
+                :class="[
+                  'px-3 py-1 rounded-full text-sm',
+                  themeStore.isDarkMode
+                    ? 'bg-gray-700/50 text-gray-300'
+                    : 'bg-gray-100 text-gray-600',
+                ]"
               >
                 {{ tag }}
               </span>
             </div>
-            <p class="text-gray-700">{{ novel.summary }}</p>
+            <p :class="themeStore.isDarkMode ? 'text-gray-300' : 'text-gray-700'">
+              {{ novel.summary }}
+            </p>
             <div class="flex items-center space-x-4">
               <button
                 @click="startReading"
-                class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors duration-300"
               >
                 开始阅读
               </button>
               <button
                 @click="toggleBookmark"
-                class="px-6 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
-                :class="{ 'text-indigo-600 border-indigo-600': isBookmarked }"
+                :class="[
+                  'px-6 py-2 rounded-md transition-colors duration-300',
+                  themeStore.isDarkMode
+                    ? isBookmarked
+                      ? 'border-indigo-500 text-indigo-400 border'
+                      : 'border-gray-600 text-gray-300 border hover:bg-gray-700/50'
+                    : isBookmarked
+                      ? 'border-indigo-600 text-indigo-600 border hover:bg-indigo-50'
+                      : 'border-gray-300 text-gray-600 border hover:bg-gray-50',
+                ]"
               >
                 {{ isBookmarked ? '已收藏' : '收藏' }}
               </button>
             </div>
-            <div class="text-sm text-gray-500">
+            <div :class="themeStore.isDarkMode ? 'text-gray-400' : 'text-gray-500'" class="text-sm">
               <p>更新时间：{{ formatDate(novel.updatedAt) }}</p>
               <p>创建时间：{{ formatDate(novel.createdAt) }}</p>
             </div>
@@ -64,14 +89,26 @@
       </div>
 
       <!-- Chapter List -->
-      <div class="bg-white rounded-lg shadow-sm p-6">
+      <div
+        :class="[
+          'rounded-lg shadow-sm p-6 transition-colors duration-300',
+          themeStore.isDarkMode ? 'bg-slate-800/90 text-gray-100' : 'bg-white text-gray-900',
+        ]"
+      >
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-2xl font-bold">章节列表</h2>
           <div class="flex items-center gap-4">
-            <span class="text-gray-500">共 {{ chapterCount }} 章</span>
+            <span :class="themeStore.isDarkMode ? 'text-gray-400' : 'text-gray-500'"
+              >共 {{ chapterCount }} 章</span
+            >
             <select
               v-model="currentPage"
-              class="px-3 py-1 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+              :class="[
+                'px-3 py-1 rounded-md transition-colors duration-300',
+                themeStore.isDarkMode
+                  ? 'bg-gray-700 border-gray-600 text-gray-200 focus:ring-indigo-500 focus:border-indigo-500'
+                  : 'border-gray-300 focus:ring-indigo-500 focus:border-indigo-500',
+              ]"
             >
               <option v-for="page in totalPages" :key="page" :value="page">第 {{ page }} 页</option>
             </select>
@@ -88,14 +125,17 @@
           <div
             v-for="chapter in chapters"
             :key="chapter.chapterId"
-            class="flex items-center justify-between p-4 hover:bg-gray-50 rounded-md"
+            :class="[
+              'flex items-center justify-between p-4 rounded-md transition-colors duration-300',
+              themeStore.isDarkMode ? 'hover:bg-gray-700/50' : 'hover:bg-gray-50',
+            ]"
           >
             <div>
-              <h3 class="font-medium">第 {{ chapter.order }} 章：{{ chapter.title }}</h3>
+              <h3 class="font-medium">{{ chapter.title }}</h3>
             </div>
             <router-link
               :to="`/read/${novel.id}/${chapter.chapterId}`"
-              class="text-indigo-600 hover:text-indigo-700"
+              class="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors duration-300"
             >
               阅读 →
             </router-link>
@@ -108,11 +148,16 @@
             v-for="page in totalPages"
             :key="page"
             @click="currentPage = page"
-            class="px-4 py-2 border rounded-md"
-            :class="{
-              'bg-indigo-600 text-white': currentPage === page,
-              'hover:bg-gray-50': currentPage !== page,
-            }"
+            :class="[
+              'px-4 py-2 rounded-md transition-colors duration-300',
+              themeStore.isDarkMode
+                ? currentPage === page
+                  ? 'bg-indigo-600 text-white'
+                  : 'border border-gray-600 text-gray-300 hover:bg-gray-700/50'
+                : currentPage === page
+                  ? 'bg-indigo-600 text-white'
+                  : 'border border-gray-300 hover:bg-gray-50',
+            ]"
           >
             {{ page }}
           </button>
@@ -131,11 +176,13 @@ import { useRoute, useRouter } from 'vue-router'
 import { $novel, $chapter, $history } from '../../composables/useApi/useContent'
 import type { Novel, Chapter } from '../../composables/useApi/useContent'
 import { useAsyncData } from '../../composables/useApi/useApi'
+import { useThemeStore } from '@/stores/theme'
 import CommentList from '@/components/comment/CommentList.vue'
 import CommentInputBox from '@/components/comment/CommentInputBox.vue'
 
 const route = useRoute()
 const router = useRouter()
+const themeStore = useThemeStore()
 const novelId = route.params.id as string
 
 // 小说数据

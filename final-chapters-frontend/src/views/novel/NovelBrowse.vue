@@ -1,7 +1,12 @@
 <template>
-  <div class="space-y-8">
+  <div :class="['space-y-8', themeStore.isDarkMode ? 'text-gray-100' : 'text-gray-800']">
     <!-- Search and Filters -->
-    <div class="bg-white p-6 rounded-lg shadow-sm">
+    <div
+      :class="[
+        'p-6 rounded-lg shadow-sm transition-colors duration-300',
+        themeStore.isDarkMode ? 'bg-slate-800/50' : 'bg-white',
+      ]"
+    >
       <div class="flex flex-col md:flex-row gap-4">
         <div class="flex-1">
           <input
@@ -9,14 +14,24 @@
             type="text"
             placeholder="搜索小说..."
             @input="handleSearch"
-            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            :class="[
+              'w-full px-4 py-2 rounded-md border transition-colors duration-300',
+              themeStore.isDarkMode
+                ? 'bg-slate-700/50 border-slate-600/50 text-gray-100 placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500'
+                : 'bg-white border-gray-300 text-gray-800 focus:ring-indigo-500 focus:border-indigo-500',
+            ]"
           />
         </div>
         <div class="flex gap-4">
           <select
             v-model="selectedCategory"
             @change="handleCategoryChange"
-            class="px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            :class="[
+              'px-4 py-2 rounded-md border transition-colors duration-300',
+              themeStore.isDarkMode
+                ? 'bg-slate-700/50 border-slate-600/50 text-gray-100 focus:ring-indigo-500 focus:border-indigo-500'
+                : 'bg-white border-gray-300 text-gray-800 focus:ring-indigo-500 focus:border-indigo-500',
+            ]"
           >
             <option value="">全部分类</option>
             <option v-for="category in categories" :key="category" :value="category">
@@ -25,7 +40,12 @@
           </select>
           <select
             v-model="sortBy"
-            class="px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            :class="[
+              'px-4 py-2 rounded-md border transition-colors duration-300',
+              themeStore.isDarkMode
+                ? 'bg-slate-700/50 border-slate-600/50 text-gray-100 focus:ring-indigo-500 focus:border-indigo-500'
+                : 'bg-white border-gray-300 text-gray-800 focus:ring-indigo-500 focus:border-indigo-500',
+            ]"
           >
             <option value="latest">最新发布</option>
             <option value="popular">最受欢迎</option>
@@ -33,7 +53,12 @@
           </select>
           <button
             @click="showHistoryModal = true"
-            class="px-4 py-2 bg-indigo-100 text-indigo-700 rounded-md hover:bg-indigo-200"
+            :class="[
+              'px-4 py-2 rounded-md transition-colors duration-300',
+              themeStore.isDarkMode
+                ? 'bg-indigo-600/50 text-indigo-200 hover:bg-indigo-600'
+                : 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200',
+            ]"
           >
             我的收藏
           </button>
@@ -48,13 +73,28 @@
         @click="showHistoryModal = false"
       ></div>
       <div
-        class="relative bg-white rounded-xl shadow-2xl p-8 max-w-2xl w-full mx-4 transform transition-all"
+        :class="[
+          'relative rounded-xl shadow-2xl p-8 max-w-2xl w-full mx-4 transform transition-all',
+          themeStore.isDarkMode ? 'bg-slate-800/90' : 'bg-white',
+        ]"
       >
         <div class="flex justify-between items-center mb-6">
-          <h2 class="text-2xl font-bold text-gray-900">我的收藏</h2>
+          <h2
+            :class="[
+              themeStore.isDarkMode ? 'text-gray-100' : 'text-gray-900',
+              'text-2xl font-bold',
+            ]"
+          >
+            我的收藏
+          </h2>
           <button
             @click="showHistoryModal = false"
-            class="text-gray-400 hover:text-gray-600 transition-colors"
+            :class="[
+              themeStore.isDarkMode
+                ? 'text-gray-400 hover:text-gray-300'
+                : 'text-gray-400 hover:text-gray-600',
+              'transition-colors',
+            ]"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -75,10 +115,13 @@
 
         <div
           v-else-if="histories.length === 0"
-          class="flex flex-col items-center justify-center py-12 text-gray-500"
+          :class="[
+            'flex flex-col items-center justify-center py-12',
+            themeStore.isDarkMode ? 'text-gray-400' : 'text-gray-500',
+          ]"
         >
           <svg
-            class="w-16 h-16 mb-4 text-gray-400"
+            :class="[themeStore.isDarkMode ? 'text-gray-600' : 'text-gray-400', 'w-16 h-16 mb-4']"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -98,18 +141,33 @@
           <div
             v-for="history in histories"
             :key="history.historyId"
-            class="group bg-gradient-to-r from-white to-gray-50 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100"
+            :class="[
+              'group rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border',
+              themeStore.isDarkMode
+                ? 'bg-gradient-to-r from-slate-800 to-slate-700 border-slate-700/50'
+                : 'bg-gradient-to-r from-white to-gray-50 border-gray-100',
+            ]"
           >
             <div class="p-4">
               <div class="flex items-start justify-between">
                 <div class="flex-1">
                   <router-link
                     :to="`/novel/${history.novelId}`"
-                    class="text-lg font-medium text-gray-900 hover:text-indigo-600 transition-colors line-clamp-1"
+                    :class="[
+                      'text-lg font-medium line-clamp-1 transition-colors',
+                      themeStore.isDarkMode
+                        ? 'text-gray-100 hover:text-indigo-400'
+                        : 'text-gray-900 hover:text-indigo-600',
+                    ]"
                   >
                     {{ getNovelTitle(history.novelId) }}
                   </router-link>
-                  <p class="text-sm text-gray-500 mt-1 flex items-center">
+                  <p
+                    :class="[
+                      themeStore.isDarkMode ? 'text-gray-400' : 'text-gray-500',
+                      'text-sm mt-1 flex items-center',
+                    ]"
+                  >
                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         stroke-linecap="round"
@@ -123,7 +181,12 @@
                 </div>
                 <button
                   @click="deleteHistory(history.historyId)"
-                  class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-2 text-gray-400 hover:text-red-500 rounded-full hover:bg-red-50"
+                  :class="[
+                    'opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-2 rounded-full',
+                    themeStore.isDarkMode
+                      ? 'text-gray-400 hover:text-red-400 hover:bg-red-900/20'
+                      : 'text-gray-400 hover:text-red-500 hover:bg-red-50',
+                  ]"
                   title="删除收藏"
                 >
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -154,50 +217,13 @@
 
     <!-- Novel Grid -->
     <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <div
-        v-for="novel in displayedNovels"
-        :key="novel.id"
-        class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
-      >
-        <img
-          :src="novel.coverImage || '/images/default-cover.jpg'"
-          :alt="novel.title"
-          class="w-full h-48 object-cover"
-        />
-        <div class="p-4">
-          <h3 class="font-semibold text-lg mb-2">{{ novel.title }}</h3>
-          <p class="text-gray-500 text-sm mb-4 line-clamp-2">{{ novel.summary }}</p>
-          <div class="flex items-center justify-between">
-            <div class="flex flex-wrap gap-2">
-              <span
-                v-if="novel.category"
-                class="px-2 py-1 bg-indigo-100 text-xs rounded-full text-indigo-700"
-              >
-                {{ novel.category }}
-              </span>
-              <span
-                v-for="tag in getTags(novel.tags)"
-                :key="tag"
-                class="px-2 py-1 bg-gray-100 text-xs rounded-full text-gray-600"
-              >
-                {{ tag }}
-              </span>
-            </div>
-            <router-link
-              :to="'/novel/' + novel.id"
-              class="text-indigo-600 font-medium hover:text-indigo-700"
-            >
-              阅读更多 →
-            </router-link>
-          </div>
-        </div>
-      </div>
+      <NovelCard v-for="novel in novelData.data" :key="novel.id" :novel="novel" />
     </div>
 
     <!-- Empty State -->
     <div
       v-if="!loading && !error && displayedNovels.length === 0"
-      class="text-center py-8 text-gray-500"
+      :class="[themeStore.isDarkMode ? 'text-gray-400' : 'text-gray-500', 'text-center py-8']"
     >
       没有找到相关小说
     </div>
@@ -208,11 +234,16 @@
         v-for="page in totalPages"
         :key="page"
         @click="currentPage = page"
-        class="px-4 py-2 border rounded-md"
-        :class="{
-          'bg-indigo-600 text-white': currentPage === page,
-          'hover:bg-gray-50': currentPage !== page,
-        }"
+        :class="[
+          'px-4 py-2 border rounded-md transition-colors duration-300',
+          currentPage === page
+            ? themeStore.isDarkMode
+              ? 'bg-indigo-600 text-white'
+              : 'bg-indigo-600 text-white'
+            : themeStore.isDarkMode
+              ? 'border-slate-700 hover:bg-slate-700/30'
+              : 'border-gray-300 hover:bg-gray-50',
+        ]"
       >
         {{ page }}
       </button>
@@ -225,6 +256,10 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { $novel, $history } from '../../composables/useApi/useContent'
 import type { Novel, BrowsingHistory } from '../../composables/useApi/useContent'
 import { useAsyncData } from '../../composables/useApi/useApi'
+import { useThemeStore } from '@/stores/theme'
+import NovelCard from '@/components/novel/NovelCard.vue'
+
+const themeStore = useThemeStore()
 
 const searchQuery = ref('')
 const selectedCategory = ref('')

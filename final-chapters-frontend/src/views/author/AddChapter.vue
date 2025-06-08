@@ -1,18 +1,77 @@
 <template>
-  <div class="add-chapter">
-    <h2>添加新章节 - {{ novel.title }}</h2>
-    <form @submit.prevent="submitChapter">
+  <div :class="['add-chapter', themeStore.isDarkMode ? 'text-gray-100' : 'text-gray-800']">
+    <h2 :class="[themeStore.isDarkMode ? 'text-gray-100' : 'text-gray-800']">
+      添加新章节 - {{ novel.title }}
+    </h2>
+    <form
+      @submit.prevent="submitChapter"
+      :class="[
+        'p-6 rounded-lg shadow-md space-y-6 transition-colors duration-300',
+        themeStore.isDarkMode ? 'bg-slate-800/50' : 'bg-white',
+      ]"
+    >
       <div class="form-group">
-        <label for="chapterTitle">章节标题:</label>
-        <input id="chapterTitle" v-model="chapter.title" type="text" required />
+        <label
+          :class="[themeStore.isDarkMode ? 'text-gray-200' : 'text-gray-700']"
+          for="chapterTitle"
+          >章节标题:</label
+        >
+        <input
+          id="chapterTitle"
+          v-model="chapter.title"
+          type="text"
+          required
+          :class="[
+            'w-full px-4 py-2 rounded-lg border transition-colors duration-300',
+            themeStore.isDarkMode
+              ? 'bg-slate-700/50 border-slate-600/50 text-gray-100'
+              : 'bg-white border-gray-300 text-gray-800',
+          ]"
+        />
       </div>
       <div class="form-group">
-        <label for="chapterContent">章节内容:</label>
-        <textarea id="chapterContent" v-model="chapter.content" rows="10" required></textarea>
+        <label
+          :class="[themeStore.isDarkMode ? 'text-gray-200' : 'text-gray-700']"
+          for="chapterContent"
+          >章节内容:</label
+        >
+        <textarea
+          id="chapterContent"
+          v-model="chapter.content"
+          rows="10"
+          required
+          :class="[
+            'w-full px-4 py-2 rounded-lg border transition-colors duration-300',
+            themeStore.isDarkMode
+              ? 'bg-slate-700/50 border-slate-600/50 text-gray-100'
+              : 'bg-white border-gray-300 text-gray-800',
+          ]"
+        ></textarea>
       </div>
       <div class="form-actions">
-        <button type="submit">提交</button>
-        <button type="button" @click="cancel">取消</button>
+        <button
+          type="submit"
+          :class="[
+            'px-6 py-2 rounded-lg font-semibold transition-colors duration-300',
+            themeStore.isDarkMode
+              ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
+              : 'bg-green-500 hover:bg-green-600 text-white',
+          ]"
+        >
+          提交
+        </button>
+        <button
+          type="button"
+          @click="cancel"
+          :class="[
+            'px-6 py-2 rounded-lg font-semibold transition-colors duration-300',
+            themeStore.isDarkMode
+              ? 'bg-gray-600 hover:bg-gray-700 text-white'
+              : 'bg-gray-500 hover:bg-gray-600 text-white',
+          ]"
+        >
+          取消
+        </button>
       </div>
     </form>
   </div>
@@ -21,10 +80,12 @@
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { $chapter } from '@/composables/useApi/useApiChapter'
+import { useThemeStore } from '@/stores/theme'
 import axios from 'axios'
 
 const route = useRoute()
 const router = useRouter()
+const themeStore = useThemeStore()
 
 // 获取路由参数
 const novelId = route.params.novelId
@@ -115,6 +176,8 @@ textarea {
 
 .form-actions {
   margin-top: 20px;
+  display: flex;
+  gap: 10px;
 }
 
 button {
