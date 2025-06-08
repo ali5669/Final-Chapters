@@ -23,7 +23,10 @@ public class CommentController {
         try{
             userIdInt = UserContext.getUserId();
             novelIdInt = Integer.parseInt(createDTO.getNovelId());
-            chapterIdInt = Integer.parseInt(createDTO.getChapterId());
+            // 处理 chapterId 为可空情况
+            if (createDTO.getChapterId() != null && !createDTO.getChapterId().isEmpty()) {
+                chapterIdInt = Integer.parseInt(createDTO.getChapterId());
+            }
             content = createDTO.getContent();
         } catch (Exception e){
             return Result.fail("参数错误: " + e);
@@ -43,12 +46,12 @@ public class CommentController {
          return Result.ok(commentService.getOne(Integer.parseInt(id)));
     }
 
-    @GetMapping("/list/{novelId}")
+    @GetMapping("/novelList/{novelId}")
     public Result listByNovelId(@PathVariable String novelId){
         return Result.ok(commentService.listByNovelId(Integer.parseInt(novelId)));
     }
 
-    @GetMapping("/list/{novelId}/{chapterId}")
+    @GetMapping("/chapterList/{novelId}/{chapterId}")
     public Result listByChapterId(@PathVariable String novelId, @PathVariable String chapterId){
         return Result.ok(commentService.listByChapterId(Integer.parseInt(novelId), Integer.parseInt(chapterId)));
     }

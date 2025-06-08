@@ -59,7 +59,7 @@ export const $comment = {
   /**
    * @tags 评论
    * @name listByNovelId
-   * @request  GET:/api/comment/novelList/{novelId}
+   * @request  GET:/api/comment/list/{novelId}
    * @response `ApiResult<Comment[]>`
    */
   listByNovelId: async (novelId: string) => {
@@ -70,7 +70,7 @@ export const $comment = {
   /**
    * @tags 评论
    * @name listByChapterId
-   * @request  GET:/api/comment/chapterList/{novelId}/{chapterId}
+   * @request  GET:/api/comment/list/{novelId}/{chapterId}
    * @response `ApiResult<Comment[]>`
    */
   listByChapterId: async (novelId: string, chapterId: string) => {

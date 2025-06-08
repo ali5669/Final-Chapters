@@ -9,21 +9,25 @@ const comment = ref('')
 
 const onClickButton = () => {
   console.log(comment.value)
-  $comment
-    .addComment({
-      data: {
-        novelId: props.novelId,
-        chapterId: props.chapterId,
-        content: comment.value,
-      },
-    })
-    .then((res: ApiResult<null>) => {
-      if (res.success) {
-        alert('发表成功')
-      } else {
-        alert(res.errorMsg)
-      }
-    })
+  try {
+    $comment
+      .addComment({
+        data: {
+          novelId: props.novelId,
+          chapterId: props.chapterId,
+          content: comment.value,
+        },
+      })
+      .then((res: ApiResult<null>) => {
+        if (res.success) {
+          alert('发表成功')
+        } else {
+          alert(res.errorMsg)
+        }
+      })
+  } catch (err) {
+    console.error('发送失败！', err)
+  }
 }
 </script>
 <template>

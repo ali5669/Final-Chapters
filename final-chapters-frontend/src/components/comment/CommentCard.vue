@@ -20,7 +20,7 @@ const { data: comment } = useAsyncData(() => $comment.getOne(props.commentId))
       <!-- 用户名和时间戳 -->
       <div class="flex justify-between items-center mb-2">
         <h2 class="text-lg font-semibold text-gray-800">{{ comment.data.userId }}</h2>
-        <span class="text-sm text-gray-500">{{ comment.data.createAt }}</span>
+        <span class="text-sm text-gray-500">{{ comment.data.createdAt }}</span>
       </div>
       <!-- 评论文本框 -->
       <div class="w-full h-24 border-2 border-gray rounded-lg p-2">
