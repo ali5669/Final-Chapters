@@ -7,7 +7,7 @@
         themeStore.isDarkMode ? 'bg-slate-800/50' : 'bg-white',
       ]"
     >
-      <img :src="novel.cover" alt="Cover" class="cover-image" />
+      <img :src="novel.coverImage" alt="Cover" class="cover-image" />
       <div class="info-details">
         <h2 :class="[themeStore.isDarkMode ? 'text-gray-100' : 'text-gray-800']">
           {{ novel.title }}

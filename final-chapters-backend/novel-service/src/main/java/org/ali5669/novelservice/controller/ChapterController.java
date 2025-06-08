@@ -25,7 +25,7 @@ public class ChapterController {
         return chapterService.getNewOrder(novelIdInt);
     }
     @PostMapping("/addChapter")
-    public Result addNovel(@RequestBody ChapterCreateDTO createDTO) {
+    public Result addChapter(@RequestBody ChapterCreateDTO createDTO) {
         Integer novelId = Integer.parseInt(createDTO.getNovelId());
         String title = createDTO.getTitle();
         String content = createDTO.getContent();

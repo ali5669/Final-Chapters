@@ -116,7 +116,7 @@ const addWork = () => {
 }
 
 const manageChapters = (work) => {
-  router.push(`/author/manageChapters/${work.id}`)
+  router.push(`/author/manageChapters/${work.novelId}`)
 }
 // 查询作者的小说
 const fetchNovelData = async () => {

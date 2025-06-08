@@ -22,7 +22,7 @@ public class ChapterServiceImpl extends ServiceImpl<ChapterMapper, Chapter> impl
         if(maxOrder !=  null){
             return Result.ok(Integer.toString(maxOrder+1));
         }
-        return Result.fail("getNewOrder failed");
+        return Result.ok(Integer.toString(1));
     }
 
     @Override
