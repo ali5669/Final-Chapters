@@ -28,15 +28,14 @@
         ></textarea>
       </div>
 
-      <!-- 封面图片路径 -->
+      <!-- 封面图片 -->
       <div>
-        <label for="cover" class="block text-sm font-medium text-gray-700 mb-1">封面图片路径</label>
+        <img :src="profilePicturePreview || '/images/default-profilePicture.png'" alt="Profile" class="w-24 h-24 rounded-full object-cover"/>
         <input
-          name="cover"
-          v-model="novel.ocover_image"
-          type="text"
-          required
-          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          id="profilePicture-upload"
+          type="file"
+          accept="image/*"
+          @change="handleprofilePictureChange"
         />
       </div>
 
@@ -105,12 +104,12 @@ const authorId = userStore.currentUser.userId.toString();
 const novel = ref({
   otitle: '',
   osummary: '',
-  ocover_image: '',
   ocategory: '',
   otags: ''
 });
 
-
+// 封面文件
+const coverFile = ref(null);
 
 /**
  * 提交小说方法
@@ -118,24 +117,29 @@ const novel = ref({
  */
 const submitNovel = async() => {
   try {
-    const { otitle, osummary, ocover_image, ocategory, otags } = novel.value;
+    const { otitle, osummary, ocategory, otags } = novel.value;
     // 检查所有字段是否填写
-    if (!otitle || !osummary || !ocover_image || !ocategory || !otags) {
+    if (!otitle || !osummary || !ocategory || !otags) {
       alert('请填写所有必填字段');
       return;
     }
-
+    // 检查封面文件是否上传
+    if (!coverFile.value) {
+      alert('请上传封面图片');
+      return;
+    }
     // 构造完整的小说对象
     const newNovel = {
       "authorId": authorId,
       "title": novel.value.otitle,
       "summary": novel.value.osummary,
       "category": novel.value.ocategory,
-      "tags": novel.value.otags
+      "tags": novel.value.otags,
+      "cover": coverFile.value,
     };
     // 输出结果，或替换为 API 调用
     console.log('提交的小说数据:', newNovel);
-    const { data: res } = await $novel.addNovel({data: newNovel})
+    const { data: res } = await $novel.addNovelWithCover({data: newNovel})
     console.log('结果res:', res);
     // 返回上一页
     router.push('/author');
@@ -146,4 +150,69 @@ const submitNovel = async() => {
   }
   
 };
+// profilePicture handling
+const profilePicturePreview = ref<string | null>(null)
+
+const handleprofilePictureChange = async (event: Event) => {
+  // 回显封面
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (file) {
+    // Check file size (2MB limit)
+    if (file.size > 2 * 1024 * 1024) {
+      alert('文件大小不能超过 2MB')
+      return
+    }
+    // Check file type
+    const allowedTypes = ['image/jpeg', 'image/png']
+    if (!allowedTypes.includes(file.type)) {
+      alert('请上传 JPG 或 PNG 格式的图片')
+      return
+    }
+    coverFile.value = file
+    // console.log(file)
+    // console.log(coverFile.value)
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      profilePicturePreview.value = e.target?.result as string
+    }
+    reader.readAsDataURL(file)
+  }
+
+
+
+  //   try {
+  //     const response = await $novel.addNovelWithCover({
+  //       data: {
+  //         username: userStore.currentUser.username,
+  //         profilePicture: file
+  //       }
+  //     })
+
+  //     if (response.success) {
+  //       // Create preview
+  //       userStore.currentUser.profilePicture=response.data.profilePicture
+  //       const reader = new FileReader()
+  //       reader.onload = (e) => {
+  //         profilePicturePreview.value = e.target?.result as string
+  //       }
+  //       reader.readAsDataURL(file)
+
+  //       // Update user store with new profilePicture
+  //       if (userStore.currentUser) {
+  //         userStore.setUser({
+  //           ...userStore.currentUser,
+  //           profilePicture: userStore.currentUser.profilePicture
+  //         })
+  //       }
+  //       alert('头像上传成功')
+  //     } else {
+  //       alert(response.errorMsg || '头像上传失败')
+  //     }
+  //   } catch (error) {
+  //     console.error('profilePicture upload failed:', error)
+  //     alert('头像上传失败，请重试')
+  //   }
+  // }
+}
 </script>

@@ -5,7 +5,7 @@ spring:
     name: content-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://101.201.52.101:3306/novel?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    url: jdbc:mysql://112.126.93.22:3306/novel?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
     username: root
     password: final-chapters123456
   jpa:
@@ -19,6 +19,8 @@ spring:
   cloud:
     nacos:
       server-addr: 101.201.52.101:8848
+      discovery:
+        ip: 123.56.203.89
 
 logging:
   level:

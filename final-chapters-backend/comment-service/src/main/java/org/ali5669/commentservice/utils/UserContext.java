@@ -1,14 +1,14 @@
 package org.ali5669.commentservice.utils;
 
 public class UserContext {
-    private static final ThreadLocal<Long> tl = new ThreadLocal<>();
+    private static final ThreadLocal<Integer> tl = new ThreadLocal<>();
 
-    public static void setUserId(Long userId)
+    public static void setUserId(Integer userId)
     {
         tl.set(userId);
     }
 
-    public static Long getUserId()
+    public static Integer getUserId()
     {
         return tl.get();
     }

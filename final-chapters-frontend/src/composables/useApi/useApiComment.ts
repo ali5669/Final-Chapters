@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { commentClient, ratingClient, useApiPath, type ApiResult } from './useApi'
+import { commentClient, ratingClient, type ApiResult } from './useApi'
 
 export interface Comment {
   commentId: number
@@ -7,7 +7,7 @@ export interface Comment {
   novelId: number
   chapterId: number
   content: string
-  createAt: string
+  createdAt: string
 }
 
 export interface Rating {
@@ -15,7 +15,7 @@ export interface Rating {
   userId: number
   novelId: number
   rating: number
-  createAt: string
+  createdAt: string
 }
 
 export interface RatingCountDTO {
@@ -36,9 +36,8 @@ export const $comment = {
    */
   addComment: async (params: {
     data: {
-      userId: string
       novelId: string
-      chapterId: string
+      chapterId?: string
       content: string
     }
   }) => {
@@ -64,7 +63,7 @@ export const $comment = {
    * @response `ApiResult<Comment[]>`
    */
   listByNovelId: async (novelId: string) => {
-    const { data } = await commentClient.get<ApiResult<Comment[]>>(`/list/${novelId}`)
+    const { data } = await commentClient.get<ApiResult<Comment[]>>(`/novelList/${novelId}`)
     return data
   },
 
@@ -75,7 +74,9 @@ export const $comment = {
    * @response `ApiResult<Comment[]>`
    */
   listByChapterId: async (novelId: string, chapterId: string) => {
-    const { data } = await commentClient.get<ApiResult<Comment[]>>(`/list/${novelId}/${chapterId}`)
+    const { data } = await commentClient.get<ApiResult<Comment[]>>(
+      `/chapterList/${novelId}/${chapterId}`,
+    )
     return data
   },
 }

@@ -1,0 +1,71 @@
+name: Build and Deploy Content Service
+
+on:
+  push:
+    branches:
+      - main # 或你希望触发的分支名
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: ["content-service"]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Build Service - ${{ matrix.service }}
+        run: |
+          cd final-chapters-backend/${{ matrix.service }}
+          mvn clean package
+      - name: Upload Artifact (Optional)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.service }}-jar
+          path: final-chapters-backend/${{ matrix.service }}/target/*.jar
+
+      - name: Deploy to server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST_CONTENT_SERVICE }}
+          username: ${{ secrets.USERNAME_CONTENT_SERVICE }}
+          port: ${{ secrets.PORT_CONTENT_SERVICE }}
+          key: ${{ secrets.KEY_CONTENT_SERVICE }}
+          source: "final-chapters-backend/${{ matrix.service }}/target/*.jar"
+          target: "/root/workspace/FinalChaptersServer"
+
+      - name: Restart Java Process
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_CONTENT_SERVICE }}
+          username: ${{ secrets.USERNAME_CONTENT_SERVICE }}
+          port: ${{ secrets.PORT_CONTENT_SERVICE }}
+          key: ${{ secrets.KEY_CONTENT_SERVICE }}
+          command_timeout: 20s
+          script: |
+            set -ex
+            PID=$(ps -ef | grep ".jar" | grep -v "grep" | awk '{print $2}')
+            if [ -n "$PID" ]; then
+              kill -9 $PID
+            fi
+            cd /root/workspace/FinalChaptersServer/final-chapters-backend/${{ matrix.service }}/target/
+            nohup java -jar *.jar > ${{ matrix.service }}.txt 2>&1 &
+            exit

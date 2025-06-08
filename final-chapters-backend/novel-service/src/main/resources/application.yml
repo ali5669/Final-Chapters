@@ -6,12 +6,14 @@ spring:
     name: novel-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://101.201.52.101:3306/novel?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://112.126.93.22:3306/novel?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
     username: root
     password: final-chapters123456
   cloud:
     nacos:
       server-addr: 101.201.52.101:8848
+      discovery:
+        ip: 112.126.93.22
 mybatis-plus:
   type-aliases-package: com.ali5669.novelserivce.domain.po
 logging:

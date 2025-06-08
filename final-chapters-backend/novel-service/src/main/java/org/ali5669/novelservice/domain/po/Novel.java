@@ -35,6 +35,10 @@ public class Novel implements Serializable {
      */
     private String summary;
     /**
+     * 封面
+     */
+    private String coverImage;
+    /**
      * 类别
      */
     private String category;

@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class CommentCreateDTO {
-    private String userId;
     private String novelId;
     private String chapterId;
     private String content;
