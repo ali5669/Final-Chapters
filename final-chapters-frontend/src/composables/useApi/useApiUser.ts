@@ -116,5 +116,17 @@ export const $user = {
   getUser: async()=>{
     const {data} = await userClient.get<ApiResult<User>>('')
     return data
+  },
+
+  /**
+   * @tags 用户
+   * @name getUserById
+   * @request  POST:/api/user
+   * @response `ApiResult<User>`
+   */
+
+  getUserById: async(id:string)=>{
+    const {data} = await userClient.get<ApiResult<User>>(`/${id}`)
+    return data
   }
 }
