@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { commentClient, ratingClient, useApiPath, type ApiResult } from './useApi'
+import { commentClient, ratingClient, type ApiResult } from './useApi'
 
 export interface Comment {
   commentId: number
@@ -7,7 +7,7 @@ export interface Comment {
   novelId: number
   chapterId: number
   content: string
-  createAt: string
+  createdAt: string
 }
 
 export interface Rating {
@@ -15,7 +15,7 @@ export interface Rating {
   userId: number
   novelId: number
   rating: number
-  createAt: string
+  createdAt: string
 }
 
 export interface RatingCountDTO {
@@ -37,7 +37,7 @@ export const $comment = {
   addComment: async (params: {
     data: {
       novelId: string
-      chapterId: string
+      chapterId?: string
       content: string
     }
   }) => {

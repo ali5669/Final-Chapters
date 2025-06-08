@@ -44,5 +44,5 @@ public class Comment implements Serializable {
     /**
      * 创建时间
      */
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 }

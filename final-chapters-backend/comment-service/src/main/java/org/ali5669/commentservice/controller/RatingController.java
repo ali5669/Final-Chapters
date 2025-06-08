@@ -16,9 +16,16 @@ public class RatingController {
 
     @PostMapping
     public Result addRating(@RequestBody RatingCreateDTO createDTO){
-        Integer userIdInt = UserContext.getUserId().intValue();
-        Integer novelIdInt = Integer.parseInt(createDTO.getNovelId());
-        Integer ratingInt = Integer.parseInt(createDTO.getRating());
+        Integer userIdInt = null;
+        Integer novelIdInt = null;
+        Integer ratingInt = null;
+        try {
+            userIdInt = UserContext.getUserId();
+            novelIdInt = Integer.parseInt(createDTO.getNovelId());
+            ratingInt = Integer.parseInt(createDTO.getRating());
+        } catch (NumberFormatException e) {
+            return Result.fail("参数错误: " + e);
+        }
 
         Rating rating = new Rating();
         rating.setUserId(userIdInt);
@@ -28,13 +35,13 @@ public class RatingController {
         return ratingService.createRating(rating);
     }
 
-    @GetMapping("/average")
-    public Result getAverageRating(@RequestParam("novelId") String novelId){
+    @GetMapping("/average/{novelId}")
+    public Result getAverageRating(@PathVariable String novelId){
         return Result.ok(ratingService.getAverageRating(Integer.parseInt(novelId)).toString());
     }
 
-    @GetMapping("/list")
-    public Result listByNovelId(@RequestParam("novelId") String novelId){
+    @GetMapping("/list/{novelId}")
+    public Result listByNovelId(@PathVariable String novelId){
         return Result.ok(ratingService.listByNovelId(Integer.parseInt(novelId)));
     }
 }
