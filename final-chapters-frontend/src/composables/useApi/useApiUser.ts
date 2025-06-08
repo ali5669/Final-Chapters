@@ -40,6 +40,7 @@ export interface BecomeVIPRequest {
   isVIP: boolean
 }
 
+
 /**
  * @name user
  * @description 用户相关请求接口集合
@@ -104,4 +105,16 @@ export const $user = {
     const { data } = await userClient.post<ApiResult<User>>('/becomeVIP', params.data)
     return data
   },
+
+  /**
+   * @tags 用户
+   * @name getUser
+   * @request  POST:/api/user
+   * @response `ApiResult<User>`
+   */
+
+  getUser: async()=>{
+    const {data} = await userClient.get<ApiResult<User>>('')
+    return data
+  }
 }
