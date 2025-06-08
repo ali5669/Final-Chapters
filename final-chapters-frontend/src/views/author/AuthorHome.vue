@@ -12,7 +12,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div
           v-for="work in authorWorks"
-          :key="work.id"
+          :key="work.novelId"
           class="bg-white rounded-lg shadow-md overflow-hidden"
         >
           <div class="p-4">
@@ -56,9 +56,9 @@ const author = ref({
 })
 
 const authorWorks = ref([
-  { id: '13', title: '王者荣耀攻略' },
-  { id: '2', title: '作品二' },
-  { id: '3', title: '作品三' },
+  { novelId: '13', title: '王者荣耀攻略' },
+  { novelId: '2', title: '作品二' },
+  { novelId: '3', title: '作品三' },
 ])
 
 // Methods
@@ -71,19 +71,15 @@ const manageChapters = (work) => {
 }
 // 查询作者的小说
 const fetchNovelData = async () => {
-  // const { data: novels } = await $novel.getNovelById({data:{novelId:novelId}});
+  const { data: novels } = await $novel.getNovels({data:{authorId:userStore.currentUser.userId.toString()}});
+  authorWorks.value = novels
 
 };
 onMounted(async() => {
   try{
-    // Mock successful login
-    const mockUser = {
-      userId: 12345,
-      username: 'mockuser',
-      isVIP: false,
-    }
-    userStore.setUser(mockUser)
+    
     author.value.username = userStore.currentUser.username
+    author.value.profilePicture = userStore.currentUser.profilePicture
     await Promise.all([fetchNovelData()]);
   }catch(err){
     console.error(err)
