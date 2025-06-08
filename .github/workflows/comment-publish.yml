@@ -1,4 +1,4 @@
-name: Build and Deploy Novel Service
+name: Build and Deploy Comment Service
 
 on:
   push:
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        service: ['novel-service']
+        service: ['comment-service']
   
     steps:
     - name: Checkout Code
@@ -47,30 +47,30 @@ jobs:
     - name: Deploy to server
       uses: appleboy/scp-action@master
       with:
-        host: ${{ secrets.HOST_NOVEL_SERVICE }}
-        username: ${{ secrets.USERNAME_NOVEL_SERVICE }}
-        port: ${{ secrets.PORT_NOVEL_SERVICE }}
-        key: ${{ secrets.KEY_NOVEL_SERVICE }}
+        host: ${{ secrets.HOST_COMMENT_SERVICE }}
+        username: ${{ secrets.USERNAME_COMMENT_SERVICE }}
+        port: ${{ secrets.PORT_COMMENT_SERVICE }}
+        key: ${{ secrets.KEY_COMMENT_SERVICE }}
         source: "final-chapters-backend/${{ matrix.service }}/target/*.jar"
         target: "/root/workspace/FinalChaptersServer/tmp"
         
     - name: Restart Service
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ secrets.HOST_NOVEL_SERVICE }}
-        username: ${{ secrets.USERNAME_NOVEL_SERVICE }}
-        port: ${{ secrets.PORT_NOVEL_SERVICE }}
-        key: ${{ secrets.KEY_NOVEL_SERVICE }}
+        host: ${{ secrets.HOST_COMMENT_SERVICE }}
+        username: ${{ secrets.USERNAME_COMMENT_SERVICE }}
+        port: ${{ secrets.PORT_COMMENT_SERVICE }}
+        key: ${{ secrets.KEY_COMMENT_SERVICE }}
         script: |
           # Stop Old Service
-          PID=$(ps -ef | grep "novel-service-0.0.1-SNAPSHOT.jar" | grep -v "grep" | awk '{print $2}')
+          PID=$(ps -ef | grep "comment-service-0.0.1-SNAPSHOT.jar" | grep -v "grep" | awk '{print $2}')
           if [ -n "$PID" ]; then
             kill -9 $PID
           fi
           
           # Replace old jar with new jar
-          mv /root/workspace/FinalChaptersServer/tmp/*.jar /root/workspace/FinalChaptersServer/${{ matrix.service }}/novel-service-0.0.1-SNAPSHOT.jar
+          mv /root/workspace/FinalChaptersServer/tmp/*.jar /root/workspace/FinalChaptersServer/${{ matrix.service }}/comment-service-0.0.1-SNAPSHOT.jar
           
           # Start new service
           cd /root/workspace/FinalChaptersServer/${{ matrix.service }}
-          nohup java -jar novel-service-0.0.1-SNAPSHOT.jar > commentlog.txt &
+          nohup java -jar comment-service-0.0.1-SNAPSHOT.jar > commentlog.txt &
