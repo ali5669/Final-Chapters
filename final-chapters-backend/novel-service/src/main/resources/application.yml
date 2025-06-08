@@ -12,6 +12,8 @@ spring:
   cloud:
     nacos:
       server-addr: 101.201.52.101:8848
+      discovery:
+        ip: 112.126.93.22
 mybatis-plus:
   type-aliases-package: com.ali5669.novelserivce.domain.po
 logging:

@@ -52,6 +52,7 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
             // 如果无效，拦截
             ServerHttpResponse response = exchange.getResponse();
             response.setRawStatusCode(401);
+            System.out.println("token 无效: " + token);
             return response.setComplete();
         }
 

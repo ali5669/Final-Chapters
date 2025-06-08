@@ -5,6 +5,7 @@ import org.ali5669.commentservice.domain.dto.CommentCreateDTO;
 import org.ali5669.commentservice.domain.dto.Result;
 import org.ali5669.commentservice.domain.po.Comment;
 import org.ali5669.commentservice.service.ICommentService;
+import org.ali5669.commentservice.utils.UserContext;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,7 +16,8 @@ public class CommentController {
 
     @PostMapping
     public Result addComment(@RequestBody CommentCreateDTO createDTO) {
-        Integer userIdInt = Integer.parseInt(createDTO.getUserId());
+
+        Integer userIdInt = UserContext.getUserId().intValue();
         Integer novelIdInt = Integer.parseInt(createDTO.getNovelId());
         Integer chapterIdInt = Integer.parseInt(createDTO.getChapterId());
         String content = createDTO.getContent();

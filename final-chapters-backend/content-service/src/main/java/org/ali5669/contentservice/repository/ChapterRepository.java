@@ -23,7 +23,7 @@ public interface ChapterRepository extends JpaRepository<Chapter, Long> {
     List<Chapter> findByNovelIdAndTitleContaining(Long novelId, String title);
     
     // 分页查询章节
-    @Query(value = "SELECT * FROM novel.chapter WHERE novel_id = :novelId " +
+    @Query(value = "SELECT * FROM chapter WHERE novel_id = :novelId " +
            "ORDER BY `order` LIMIT :pageSize OFFSET :offset", 
            nativeQuery = true)
     List<Chapter> findChaptersByPage(
