@@ -62,14 +62,20 @@ jobs:
         port: ${{ secrets.PORT_NOVEL_SERVICE }}
         key: ${{ secrets.KEY_NOVEL_SERVICE }}
         script: |
+          set -ex
           # Stop Old Service
           PID=$(ps -ef | grep "novel-service-0.0.1-SNAPSHOT.jar" | grep -v "grep" | awk '{print $2}')
           if [ -n "$PID" ]; then
             kill -9 $PID
           fi
+
+          ls -la /root/workspace/FinalChaptersServer/tmp
           
           # Replace old jar with new jar
           mv /root/workspace/FinalChaptersServer/tmp/*.jar /root/workspace/FinalChaptersServer/${{ matrix.service }}/novel-service-0.0.1-SNAPSHOT.jar
+
+          pwd
+          ls -la
           
           # Start new service
           cd /root/workspace/FinalChaptersServer/${{ matrix.service }}
