@@ -61,7 +61,11 @@ jobs:
           key: ${{ secrets.KEY_CONTENT_SERVICE }}
           command_timeout: 20s
           script: |
-            ps -ef | grep *.jar | grep -v grep | awk '{print $2}' | xargs kill -9
+            set -ex
+            PID=$(ps -ef | grep ".jar" | grep -v "grep" | awk '{print $2}')
+            if [ -n "$PID" ]; then
+              kill -9 $PID
+            fi
             cd /root/workspace/FinalChaptersServer/final-chapters-backend/${{ matrix.service }}/target/
             nohup java -jar *.jar > ${{ matrix.service }}.txt 2>&1 &
             exit
