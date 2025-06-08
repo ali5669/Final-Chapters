@@ -141,6 +141,9 @@
         </div>
       </div>
     </template>
+
+    <CommentList :novel-id="novelId"></CommentList>
+    <CommentInputBox :novel-id="novelId" :chapter-id="chapterId"></CommentInputBox>
   </div>
 </template>
 
@@ -150,6 +153,8 @@ import { useRoute, useRouter } from 'vue-router'
 import { $novel, $chapter } from '../../composables/useApi/useContent'
 import type { Novel, Chapter } from '../../composables/useApi/useContent'
 import { useAsyncData } from '../../composables/useApi/useApi'
+import CommentList from '@/components/comment/CommentList.vue'
+import CommentInputBox from '@/components/comment/CommentInputBox.vue'
 
 const route = useRoute()
 const router = useRouter()

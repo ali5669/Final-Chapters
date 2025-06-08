@@ -1,4 +1,3 @@
-import axios from 'axios'
 import type { ApiResult } from './useApi'
 import { userClient } from './useApi'
 
@@ -39,7 +38,6 @@ export interface BecomeVIPRequest {
   username: string
   isVIP: boolean
 }
-
 
 /**
  * @name user
@@ -113,8 +111,8 @@ export const $user = {
    * @response `ApiResult<User>`
    */
 
-  getUser: async()=>{
-    const {data} = await userClient.get<ApiResult<User>>('')
+  getUser: async () => {
+    const { data } = await userClient.get<ApiResult<User>>('')
     return data
   },
 
@@ -125,8 +123,8 @@ export const $user = {
    * @response `ApiResult<User>`
    */
 
-  getUserById: async(id:string)=>{
-    const {data} = await userClient.get<ApiResult<User>>(`/${id}`)
+  getUserById: async (id: string) => {
+    const { data } = await userClient.get<ApiResult<User>>(`/${id}`)
     return data
-  }
+  },
 }

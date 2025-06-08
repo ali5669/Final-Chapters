@@ -129,7 +129,7 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { $novel, $chapter, $history } from '../../composables/useApi/useContent'
-import type { Novel, Chapter, BrowsingHistory } from '../../composables/useApi/useContent'
+import type { Novel, Chapter } from '../../composables/useApi/useContent'
 import { useAsyncData } from '../../composables/useApi/useApi'
 import CommentList from '@/components/comment/CommentList.vue'
 import CommentInputBox from '@/components/comment/CommentInputBox.vue'
