@@ -46,7 +46,7 @@
       <ul>
         <li
           v-for="chapter in chapters"
-          :key="chapter.id"
+          :key="chapter.chapterId"
           :class="[
             'chapter-item p-4 transition-colors duration-300',
             themeStore.isDarkMode
@@ -81,7 +81,7 @@
     </div>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { $chapter } from '@/composables/useApi/useApiChapter'

@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { chapterClient, type ApiResult } from './useApi'
 
 export interface Chapter {
@@ -6,9 +5,8 @@ export interface Chapter {
   novelId: string
   title: string
   content: string
-  order: string
+  order: number
 }
-
 
 /**
  * @name chapter
@@ -23,11 +21,11 @@ export const $chapter = {
    */
   addChapter: async (params: {
     data: {
-        novelId: string
-        title: string
-        content: string
+      novelId: string
+      title: string
+      content: string
     }
-    }) => {
+  }) => {
     const { data } = await chapterClient.post<ApiResult<string>>('/addChapter', params.data)
     return data
   },
@@ -39,10 +37,10 @@ export const $chapter = {
    * @response `ApiResult<string>`
    */
   getNewOrder: async (params: {
-      data: {
-          novelId: string
-      }
-    }) => {
+    data: {
+      novelId: string
+    }
+  }) => {
     const { data } = await chapterClient.post<ApiResult<string>>('/getNewOrder', params.data)
     return data
   },
@@ -61,6 +59,4 @@ export const $chapter = {
     const { data } = await chapterClient.post<ApiResult<Chapter[]>>('/getChapters', params.data)
     return data
   },
-
-  
 }

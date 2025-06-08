@@ -1,6 +1,13 @@
 <!-- src/views/NovelReader.vue -->
 <template>
-  <div class="min-h-screen bg-gray-50" :class="{ dark: isDarkMode }">
+  <div
+    :class="[
+      'min-h-screen transition-colors duration-300',
+      themeStore.isDarkMode
+        ? 'bg-gradient-to-br from-slate-900 via-indigo-950 to-purple-950 text-gray-100'
+        : 'bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 text-gray-800',
+    ]"
+  >
     <!-- Loading State -->
     <div v-if="loading" class="flex justify-center py-20">
       <div
@@ -13,22 +20,29 @@
 
     <template v-else>
       <!-- Reader Header -->
-      <header class="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-sm z-10">
+      <header
+        :class="[
+          'fixed top-0 left-0 right-0 z-10 backdrop-blur-xl shadow-2xl transition-colors duration-300',
+          themeStore.isDarkMode
+            ? 'bg-gradient-to-r from-slate-900/95 via-indigo-950/90 to-purple-950/90 text-white'
+            : 'bg-gradient-to-r from-indigo-100/95 via-purple-100/95 to-pink-100/95 border-b border-indigo-200/50 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] text-gray-900',
+        ]"
+      >
         <div class="container mx-auto px-4 py-2">
           <div class="flex items-center justify-between">
             <div class="flex items-center space-x-4">
               <router-link
                 :to="`/novel/${novelId}`"
-                class="text-gray-600 dark:text-gray-300 hover:text-indigo-600"
+                class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300"
               >
                 <i class="fas fa-arrow-left"></i>
               </router-link>
-              <h1 class="text-lg font-medium text-gray-900 dark:text-white">{{ novel?.title }}</h1>
+              <h1 class="text-lg font-medium">{{ novel?.title }}</h1>
             </div>
             <div class="flex items-center space-x-4">
               <button
                 @click="toggleSettings"
-                class="text-gray-600 dark:text-gray-300 hover:text-indigo-600"
+                class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-300"
               >
                 <i class="fas fa-cog"></i>
               </button>
@@ -40,7 +54,10 @@
       <!-- Reader Content -->
       <main class="container mx-auto px-4 py-20">
         <div
-          class="max-w-3xl mx-auto prose prose-lg dark:prose-invert"
+          :class="[
+            'max-w-3xl mx-auto prose prose-lg transition-colors duration-300',
+            themeStore.isDarkMode ? 'prose-invert' : '',
+          ]"
           :style="{
             fontSize: `${fontSize}px`,
             fontFamily: fontFamily,
@@ -56,14 +73,14 @@
           <button
             v-if="hasPreviousChapter"
             @click="navigateChapter('prev')"
-            class="px-4 py-2 text-indigo-600 hover:text-indigo-700"
+            class="px-4 py-2 text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors duration-300"
           >
             ← 上一章
           </button>
           <button
             v-if="hasNextChapter"
             @click="navigateChapter('next')"
-            class="px-4 py-2 text-indigo-600 hover:text-indigo-700 ml-auto"
+            class="px-4 py-2 text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors duration-300 ml-auto"
           >
             下一章 →
           </button>
@@ -76,28 +93,37 @@
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20"
         @click.self="showSettings = false"
       >
-        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
-          <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">阅读设置</h3>
+        <div
+          :class="[
+            'rounded-lg p-6 max-w-md w-full transition-colors duration-300',
+            themeStore.isDarkMode
+              ? 'bg-slate-900/90 border border-gray-700/50'
+              : 'bg-white/90 border border-gray-200/50',
+          ]"
+        >
+          <h3 class="text-lg font-semibold mb-4">阅读设置</h3>
           <div class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">主题</label>
+              <label class="block text-sm font-medium mb-2">主题</label>
               <div class="mt-2 flex space-x-4">
                 <button
-                  @click="isDarkMode = false"
-                  class="px-4 py-2 rounded-md"
+                  @click="themeStore.toggleDarkMode"
+                  class="px-4 py-2 rounded-md transition-colors duration-300"
                   :class="{
-                    'bg-indigo-600 text-white': !isDarkMode,
-                    'bg-gray-200 text-gray-700': isDarkMode,
+                    'bg-indigo-600 text-white': !themeStore.isDarkMode,
+                    'bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300':
+                      themeStore.isDarkMode,
                   }"
                 >
                   浅色
                 </button>
                 <button
-                  @click="isDarkMode = true"
-                  class="px-4 py-2 rounded-md"
+                  @click="themeStore.toggleDarkMode"
+                  class="px-4 py-2 rounded-md transition-colors duration-300"
                   :class="{
-                    'bg-indigo-600 text-white': isDarkMode,
-                    'bg-gray-200 text-gray-700': !isDarkMode,
+                    'bg-indigo-600 text-white': themeStore.isDarkMode,
+                    'bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300':
+                      !themeStore.isDarkMode,
                   }"
                 >
                   深色
@@ -106,17 +132,26 @@
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                字体大小 ({{ fontSize }}px)
-              </label>
-              <input v-model="fontSize" type="range" min="12" max="24" class="mt-2 w-full" />
+              <label class="block text-sm font-medium mb-2"> 字体大小 ({{ fontSize }}px) </label>
+              <input
+                v-model="fontSize"
+                type="range"
+                min="12"
+                max="24"
+                class="mt-2 w-full accent-indigo-600"
+              />
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">字体</label>
+              <label class="block text-sm font-medium mb-2">字体</label>
               <select
                 v-model="fontFamily"
-                class="mt-2 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                :class="[
+                  'mt-2 block w-full rounded-md transition-colors duration-300',
+                  themeStore.isDarkMode
+                    ? 'bg-gray-800 border-gray-700 text-gray-100'
+                    : 'bg-white border-gray-300 text-gray-900',
+                ]"
               >
                 <option value="serif">宋体</option>
                 <option value="sans-serif">黑体</option>
@@ -125,16 +160,14 @@
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                行高 ({{ lineHeight }})
-              </label>
+              <label class="block text-sm font-medium mb-2"> 行高 ({{ lineHeight }}) </label>
               <input
                 v-model="lineHeight"
                 type="range"
                 min="1.5"
                 max="2.5"
                 step="0.1"
-                class="mt-2 w-full"
+                class="mt-2 w-full accent-indigo-600"
               />
             </div>
           </div>
@@ -142,7 +175,7 @@
       </div>
     </template>
 
-    <CommentList :novel-id="novelId"></CommentList>
+    <CommentList :novel-id="novelId" :chapter-id="chapterId"></CommentList>
     <CommentInputBox :novel-id="novelId" :chapter-id="chapterId"></CommentInputBox>
   </div>
 </template>
@@ -153,17 +186,18 @@ import { useRoute, useRouter } from 'vue-router'
 import { $novel, $chapter } from '../../composables/useApi/useContent'
 import type { Novel, Chapter } from '../../composables/useApi/useContent'
 import { useAsyncData } from '../../composables/useApi/useApi'
+import { useThemeStore } from '@/stores/theme'
 import CommentList from '@/components/comment/CommentList.vue'
 import CommentInputBox from '@/components/comment/CommentInputBox.vue'
 
 const route = useRoute()
 const router = useRouter()
+const themeStore = useThemeStore()
 
 const novelId = route.params.novelId as string
 const chapterId = ref(route.params.chapterId as string)
 
 // 阅读设置
-const isDarkMode = ref(false)
 const fontSize = ref(18)
 const fontFamily = ref('serif')
 const lineHeight = ref(1.8)
@@ -180,7 +214,7 @@ const {
 
 const novel = ref<Novel | null>(null)
 const chapter = ref<Chapter | null>(null)
-const chapterCount = ref(0)
+const chapterCount = ref(null)
 
 const loading = computed(() => novelLoading.value || chapterLoading.value)
 
@@ -243,10 +277,7 @@ onMounted(async () => {
   // 获取章节总数
   const countResult = await $chapter.getChapterCount(novelId)
   if (countResult.success) {
-    chapterCount.value = countResult.data.chapterCount
+    chapterCount.value = countResult.data
   }
-
-  // 保存阅读进度
-  // TODO: 实现阅读进度保存功能
 })
 </script>

@@ -53,7 +53,6 @@ export const $comment = {
    */
   getOne: async (id: string) => {
     const { data } = await commentClient.get<ApiResult<Comment>>(`/${id}`)
-    console.log(data)
     return data
   },
 

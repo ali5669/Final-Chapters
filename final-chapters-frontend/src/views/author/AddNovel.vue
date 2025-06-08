@@ -70,18 +70,52 @@
 
       <!-- 封面图片 -->
       <div>
-        <img
-          :src="profilePicturePreview || '/images/default-profilePicture.png'"
-          alt="Profile"
-          class="w-24 h-24 rounded-full object-cover"
-        />
-        <input
-          id="profilePicture-upload"
-          type="file"
-          accept="image/*"
-          @change="handleprofilePictureChange"
-          :class="['mt-2', themeStore.isDarkMode ? 'text-gray-200' : 'text-gray-700']"
-        />
+        <label
+          :class="[
+            themeStore.isDarkMode ? 'text-gray-200' : 'text-gray-700',
+            'block text-sm font-medium mb-4',
+          ]"
+          >小说封面</label
+        >
+        <div class="flex items-center space-x-6">
+          <div class="relative">
+            <img
+              :src="profilePicturePreview || '/images/default-profilePicture.png'"
+              alt="Cover"
+              class="w-32 h-40 rounded-lg object-cover ring-4 ring-indigo-100 dark:ring-indigo-900"
+            />
+            <label
+              for="cover-upload"
+              class="absolute bottom-0 right-0 bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-2 rounded-full hover:from-indigo-600 hover:to-purple-700 cursor-pointer transition-all duration-300 shadow-lg"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"
+                />
+              </svg>
+            </label>
+            <input
+              id="cover-upload"
+              type="file"
+              accept="image/*"
+              class="hidden"
+              @change="handleprofilePictureChange"
+            />
+          </div>
+          <div>
+            <p :class="['text-sm', themeStore.isDarkMode ? 'text-gray-400' : 'text-gray-600']">
+              点击相机图标上传封面
+            </p>
+            <p :class="['text-xs mt-1', themeStore.isDarkMode ? 'text-gray-500' : 'text-gray-500']">
+              支持 JPG、PNG 格式，大小不超过 2MB
+            </p>
+          </div>
+        </div>
       </div>
 
       <!-- 小说类别 -->

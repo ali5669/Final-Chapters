@@ -45,8 +45,6 @@ watch(
         .finally(() => {
           userLoading.value = false
         })
-      console.log('userId changed')
-      console.log(userData.value)
     }
   },
   { immediate: true },
@@ -118,3 +116,9 @@ watch(
     </div>
   </div>
 </template>
+
+<script lang="ts">
+export default {
+  name: 'CommentCard',
+}
+</script>
