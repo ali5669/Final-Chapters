@@ -82,7 +82,7 @@ export const $novel = {
    * @tags 小说
    * @name getNovelById
    * @request  POST:/api/novel/getNovelById
-   * @response `ApiResult<string>`
+   * @response `ApiResult<Novel>`
    */
   getNovelById: async (params: {
     data: {
