@@ -217,7 +217,7 @@
 
     <!-- Novel Grid -->
     <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <NovelCard v-for="novel in novelData.data" :key="novel.id" :novel="novel" />
+      <NovelCard v-for="novel in novels" :key="novel.id" :novel="novel" />
     </div>
 
     <!-- Empty State -->
@@ -268,7 +268,18 @@ const currentPage = ref(1)
 const pageSize = 12
 
 // 预设分类列表
-const categories = ref(['奇幻', '科幻', '言情', '悬疑', '冒险', '恐怖', '历史', '现代'])
+const categories = ref([
+  '奇幻',
+  '玄幻',
+  '技术',
+  '科幻',
+  '言情',
+  '悬疑',
+  '冒险',
+  '恐怖',
+  '历史',
+  '现代',
+])
 
 // 获取小说列表
 const { data: novelData, loading, error, refresh } = useAsyncData(() => $novel.getAll())
@@ -300,6 +311,7 @@ const handleSearch = async () => {
 // 处理分类筛选
 const handleCategoryChange = async () => {
   if (selectedCategory.value) {
+    console.log('selectedCategory', selectedCategory.value)
     const result = await $novel.searchByCategory(selectedCategory.value)
     if (result.success) {
       novels.value = result.data
