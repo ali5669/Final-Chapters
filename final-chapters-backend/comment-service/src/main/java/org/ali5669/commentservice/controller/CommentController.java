@@ -23,7 +23,10 @@ public class CommentController {
         try{
             userIdInt = UserContext.getUserId();
             novelIdInt = Integer.parseInt(createDTO.getNovelId());
-            chapterIdInt = Integer.parseInt(createDTO.getChapterId());
+            // 处理 chapterId 为可空情况
+            if (createDTO.getChapterId() != null && !createDTO.getChapterId().isEmpty()) {
+                chapterIdInt = Integer.parseInt(createDTO.getChapterId());
+            }
             content = createDTO.getContent();
         } catch (Exception e){
             return Result.fail("参数错误: " + e);
